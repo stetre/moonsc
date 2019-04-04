@@ -1,0 +1,38 @@
+
+[[system_variables]]
+== System variables
+
+The following https://www.w3.org/TR/scxml/#SystemVariables[*system variables*] are defined
+as global variables in each session's dedicated $$_ENV$$:
+
+* *_$$_sessionid$$_*: the session identifier (a string).
+* *_$$_name$$_*: the value of the 'name' attribute n the root &lt;scxml&gt; element (a string, or _nil_).
+* *_$$_event$$_*: the event being processed (a <<eventinfo, eventinfo>> table, or _nil_ when no event
+is being processed).
+* *_$$_ioprocessors$$_*: a table, with an entry for each supported I/O Processor type (indexed by the type
+string), containing related information. By default contains only an entry for the _"scxml"_ value
+(SCXML I/O Processors). Other entries can be added using the <<add_ioprocessor, add_ioprocessor>>(&nbsp;))function.
+* *_$$_x$$_*: a table, for platform-dependent system variables.
+
+The following are defined only if the session is a 'child session', i.e. created by passing
+a non-_nil_ _invokeinfo_ argument to the <<create, create>>(&nbsp;) function:
+
+* *_$$_invokeid$$_*: the _invokeid_ assigned to this session by the parent (a string).
+* *_$$_x.invokeinfo$$_*: the <<invokeinfo, invokeinfo>> passed at the creation of the session.
+
+
+The following function can be used to add entries to the $$_$$ioprocessor variable for
+processors other than the default SCXML I/O Processor (_type="scxml"_):
+
+[[add_ioprocessor]]
+* *add_ioprocessor*(_type_, _location_, [_info_]) +
+[small]#Adds to the *$$_$$ioprocessors* system variable the entry for the I/O Processor
+of the given _type_ (a string). The _location_ parameter will be used as value for the
+_entry[type].location_ field. The optional _info_ parameter, is a table whose fields will
+be shallow-copied with the same names in the _entry[type]_ table.#
+
+Note: all the system variables are intended to be *read-only*, but MoonSC does little to
+enforce this rule (it just checks that they are not used as 'location' attributes) so it is
+up to the authors of the statecharts to take care not to alter or erase them.
+
+

@@ -1,0 +1,123 @@
+
+[[statecharts]]
+== Statecharts
+
+An SCXML <<elements, *element*>> is represented in MoonSC by a Lua table having the
+format shown below. A *statechart* is just the Lua-table representation of an element
+of the *&lt;scxml&gt;* type (i.e. having _element.tag="scxml"_).
+
+.Lua-table representation of a SCXML element
+[source,lua,indent=1]
+----
+element = {}
+element.tag  -- the SCXML tag (a string, e.g. _'scxml'_, _'state'_, etc.)
+element.xxx  -- the value of the attribute named 'xxx' (a string),
+element.yyy  -- the value of the attribute named 'yyy' (a string),
+-- ...
+element[1]   -- 1-st SCXML child element, in document order (a table),
+element[2]   -- 2-nd SCXML child element, in document order (a table),
+-- ...
+element[N]   -- N-th SCXML child element, in document order (a table),
+element.text -- text and/or non-SCXML markup content (a string).
+----
+
+////
+The table *t* representing an element has the following contents:
+
+* *t.tag* = the element's tag (a string, e.g. _'scxml'_, _'state'_, _'parallel'_, etc.)
+* *t.xxx* = the value of the attribute named 'xxx' (a string),
+* *t.yyy* = the value of the attribute named 'yyy' (a string),
+* ...
+* *t[1]* = 1-st SCXML child element, in document order (a similar table),
+* *t[2]* = 2-nd SCXML child element, in document order (a similar table),
+* ...
+* *t[n]* = n-th SCXML child element, in document order (a similar table),
+* *t.text* = text and/or non-SCXML markup content (a string).
+////
+
+The rules dictated by the SCXML recommendation apply to their Lua-table equivalent as well,
+specifying which attributes an element may have and their admitted values, which types of
+children it may have and how many, and so on, with a few caveats (see <<elements, 'Elements'>>
+for more details).
+
+To enhance expressivity, MoonSC provides for each element a *element constructor*, which
+is a function that takes a table as parameter and simply adds to it the element's tag field.
+Table constructors can be imported using the following function:
+
+[[import_tags]]
+* *import_tags*([_t_]) +
+[small]#Adds the element constructors to the table _t_, which defaults to the current
+$$_ENV$$ (this implies that calling this function with no arguments has the effect of
+defining the constructors as global functions in the current environment).
+For each generic SCXML element *_&lt;tag&gt;_*, its element constructor is a function
+named *_pass:[_]tag*(&nbsp;)_ with the leading underscore (e.g. _$$_state$$(&nbsp;)_ for _&lt;state&gt;_, 
+_$$_parallel$$(&nbsp;)_ for _&lt;parallel&gt;_, and so on).#
+
+The examples below shows a simple SCXML statechart and its representation in MoonSC,
+first with the tags added manually, and then using element constructors:
+
+.A simple SCXML statechart
+[source,xml,indent=1]
+----
+<scxml version="1.0" name="Hello" initial="s1">
+  <state id="s1">
+    <transition event="go" target="s2">
+      <log expr="'Hello, World!'" />
+    </transition>
+  </state>
+  <final id="s2">
+  </final>
+</scxml>
+----
+
+.Lua-table representation 
+[source,lua,indent=1]
+----
+local moonsc = require("moonsc")
+
+local helloworld = {
+   tag='scxml', version="1.0", name="Hello", initial="s1",
+   { tag='state', id = "s1",
+     { tag='transition', event="go", target="s2",
+        { tag="log", expr="'Hello, World!'" },
+     },
+   },
+   { tag='final', id="s2" },
+}
+----
+
+.Lua-table representation using constructors
+[source,lua,indent=1]
+----
+local moonsc = require("moonsc")
+moonsc.import_tags() -- adds the element constructors to this environment
+
+local helloworld = _scxml{ version="1.0", name="Hello", initial="s1",
+   _state{ id="s1",
+      _transition{ event="go", target="s2", _log{ expr="'Hello, World!'" } },
+   },
+  _final{ id="s2" },
+}
+----
+
+Note that since constructors accept a table as single parameter, the parentheses can be omitted.
+
+Also note that the statechart need not be constructed in one single shot, by defining all
+the nested elements in-line. That is, the Lua-table representation allows for *composability*
+and possibly reuse of elements definitions, as shown in the following (equivalent) re-elaboration
+of the previous example:
+
+.Composability of Lua-table representations
+[source,lua,indent=1]
+----
+local moonsc = require("moonsc")
+moonsc.import_tags() -- adds the element constructors to this environment
+
+-- This could be reused at different points in the statechart,
+-- and also in other statecharts:
+local salute = _log{ expr="'Hello, World!'" }
+local s1 = _state{ id="s1", _transition{ event="go", target="s2", salute } }
+local s2 = _final{ id="s2" }
+local helloworld = _scxml{ version="1.0", name="Hello", initial="s1", s1, s2 }
+----
+

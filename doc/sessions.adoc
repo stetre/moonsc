@@ -1,0 +1,88 @@
+
+== Sessions
+
+An SCXML *session* is an executable instance of an SCXML statechart.
+
+A MoonSC application is capable of running multiple concurrent sessions, which it
+creates and starts with the <<create, create>>(&nbsp;) with the <<start, start>>(&nbsp;)
+functions. The application may create sessions at any time, on its own initiative, or to
+serve requests from other entities (other sessions, or whatever).
+
+When creating a session, the application must assign it a *session identifier (sessionid)*.
+This is a NMTOKEN string that is required to univoquely identify the session within those
+currently being executed by the application itself. The application designer may use whatever
+scheme she likes to assign session identifiers, or just use the 
+<<generate_sessionid, generate_sessionid>>(&nbsp;) function.
+footnote:[MoonSC does not assign session ids automatically by default, because the
+designer may want to cluster the sessions running in different OS processes into a
+single set of 'local' sessions, having ids unique in the same domain (or, to put it
+in another way, she may want to execute local sessions in different OS processes, e.g.
+to run them in parallel). By having control on the assignment of session ids, she can
+ensure that those of sessions running in different processes do not collide.]
+
+After it is started, a session evolves as defined by its statechart, transitioning
+between its states in reaction to <<events, events>> or triggering conditions,
+and executing the actions contained in any enabled transition.
+The application controls the execution of transitions via the <<trigger, trigger>>(&nbsp;)
+function, which it is expected to call repeatedly in its main loop. Transitions
+are executed only within calls of this function.
+footnote:[A call of the <<trigger, trigger>>(&nbsp;) function executes, for every
+running session, an iteration of the main loop of the
+https://www.w3.org/TR/scxml/#AlgorithmforSCXMLInterpretation[SCXML algorithm].]
+
+A session terminates when it reaches a top-level &lt;final&gt; state, or
+when it is cancelled by the application using the <<cancel, cancel>>(&nbsp;) function,
+e.g. upon a cancellation request from the parent session because it exited the state
+containing the &lt;invoke&gt;. When it terminates, it is deleted from the internal
+database of sessions.
+
+The application can track the termination of sessions by setting the
+<<set_exit_callback, 'exit callback'>>, and by setting the
+<<set_error_callback, 'error callback'>> it can also track errors of execution or
+communication.
+
+[[create]]
+* *create*(_sessionid_, <<statecharts, _statechart_>>, _start_, [<<invokeinfo, invokeinfo>>]) +
+[small]#Creates a new SCXML session and possibly starts its execution. +
+_sessionid_: the session identifier for this session (a string). +
+_statechart_: the root &lt;scxml&gt; element defining the session's behavior, +
+_start_: if _true_, also starts the execution of the session, +
+_invokeinfo_: &lt;invoke &gt; information, in case this session is requested by another entity.#
+
+[[start]]
+* *start*(_sessionid_) +
+[small]#Starts the execution of the given session. If the session is already running, a call
+of this function has no effects. Note that any event sent to the session while not running
+is still delivered to it, but it is not processed until the session is started.#
+
+[[generate_sessionid]]
+* _sessionid_ = *generate_sessionid*( ) +
+[small]#Returns a new sessionid that is not currently used in the application.#
+
+[[cancel]]
+* *cancel*(_sessionid_) +
+[small]#Cancels the session, stopping it (if running) and deleting it from the
+internal database. If the session is not running it is deleted immediately, otherwise
+it is sent a special _'external'_ event that causes it to exit without triggering any
+transition (note that this implies that the session is actually cancelled only when
+this special event is processed, after any other event that was already enqueued).#
+
+[[trigger]]
+* _nsession_ = *trigger*(&nbsp;) +
+[small]#Executes an iteration of the SCXML algorithm's main loop for each session that
+is currently running in the system.
+Statecharts' transitions are executed only within calls of this function, that the application
+is expected to call repeatedly, e.g. at each iteration of its own main loop. +
+Returns _true_ if there are still sessions in the system, otherwise returns _false_.#
+
+[[active_states]]
+* _{stateid}_ = *active_states*(_sessionid_) +
+[small]#Returns the current state configuration for the given session, i.e.
+the list of ids of the currently active states (in document order). The root &lt;scxml&gt;
+is not included in the list, although it is implicitly always active.#
+
+[[is_active]]
+* _boolean_ = *is_active*(_sessionid_, _stateid_) +
+[small]#Returns _true_ if the state whose id is _stateid_ is currently active in the given
+session, otherwise returns _false_.#
+

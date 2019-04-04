@@ -1,0 +1,32 @@
+= MoonSC Reference Manual
+Stefano Trettel
+v0.1, 2019-04-04
+:toc: left
+:toclevels: 3
+:stylesdir: ./
+:stylesheet: colony.css
+:source-highlighter: pygments
+:pygments-style: autumn
+:source-language: lua
+:exampledir: ../examples
+
+image::powered-by-lua.gif[Lua logo, link=http://www.lua.org]
+
+// Macros for trees: {tS} = "   ", {tI} = "│  ", {tH} = "├─ ", {tL} = "└─ "
+:tS: &#8192;&#8192;&#8192;&#8192;
+:tI: &#9474;&#8192;&#8192;&#8192;
+:tH: &#9500;&#9472;&#8192;
+:tL: &#9492;&#9472;&#8192;
+
+include::preface.adoc[]
+include::overview.adoc[]
+include::statecharts.adoc[]
+include::sessions.adoc[]
+include::events.adoc[]
+include::datamodel.adoc[]
+include::callbacks.adoc[]
+include::utilities.adoc[]
+include::systemvariables.adoc[]
+include::elements.adoc[]
+include::structs.adoc[]
+

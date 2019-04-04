@@ -1,0 +1,60 @@
+
+[[elements]]
+== Elements
+
+For reference, below is the list of SCXML elements, with links to the relevant sections
+in the SCXML Recommendation.
+
+* *Core constructs:* https://www.w3.org/TR/scxml/#scxml[&lt;scxml&gt;],
+https://www.w3.org/TR/scxml/#state[&lt;state&gt;],
+https://www.w3.org/TR/scxml/#parallel[&lt;parallel&gt;],
+https://www.w3.org/TR/scxml/#transition[&lt;transition&gt;],
+https://www.w3.org/TR/scxml/#initial[&lt;initial&gt;],
+https://www.w3.org/TR/scxml/#final[&lt;final&gt;],
+https://www.w3.org/TR/scxml/#onentry[&lt;onentry&gt;],
+https://www.w3.org/TR/scxml/#onexit[&lt;onexit&gt;],
+https://www.w3.org/TR/scxml/#history[&lt;history&gt;].
+* *Executable elements:*
+https://www.w3.org/TR/scxml/#raise[&lt;raise&gt;],
+https://www.w3.org/TR/scxml/#if[&lt;if&gt;],
+https://www.w3.org/TR/scxml/#elseif[&lt;elseif&gt;],
+https://www.w3.org/TR/scxml/#else[&lt;else&gt;],
+https://www.w3.org/TR/scxml/#foreach[&lt;foreach&gt;],
+https://www.w3.org/TR/scxml/#log[&lt;log&gt;].
+* *Data Manipulation:*
+https://www.w3.org/TR/scxml/#datamodel[&lt;datamodel&gt;],
+https://www.w3.org/TR/scxml/#data[&lt;data&gt;],
+https://www.w3.org/TR/scxml/#assign[&lt;assign&gt;],
+https://www.w3.org/TR/scxml/#donedata[&lt;donedata&gt;],
+https://www.w3.org/TR/scxml/#content[&lt;content&gt;],
+https://www.w3.org/TR/scxml/#param[&lt;param&gt;],
+https://www.w3.org/TR/scxml/#script[&lt;script&gt;].
+* *External communications:*
+https://www.w3.org/TR/scxml/#send[&lt;send&gt;],
+https://www.w3.org/TR/scxml/#cancel[&lt;cancel&gt;],
+https://www.w3.org/TR/scxml/#invoke[&lt;invoke&gt;],
+https://www.w3.org/TR/scxml/#finalize[&lt;finalize&gt;].
+
+All elements are supported, with a few caveats:
+
+* MoonSC ignores any attribute whose name it does not recognize for the given element type.
+* In the root *&lt;scxml&gt;* element, the *'xmlns'* attribute is not supported, the *'version'* attribute
+is optional and defaults to _"1.0"_, and the *'datamodel'* attribute defaults to _"lua"_, which is
+the only admitted value (the _"lua"_ datamodel is described in the <<luadatamodel, Data Model>>
+section of this document).
+* Assistance is required from the application (via <<callbacks, callbacks>>) to fully support
+the following elements or attributes:
+** The *&lt;log&gt;* element requires assistance via the <<set_log_callback, 'log callback'>>.
+** The *&lt;data&gt;.src*, *&lt;data&gt;.text*, and *&lt;assign&gt;.text* attributes require assistance
+via the <<set_data_callback, 'data callback'>>.
+** The *&lt;content&gt;.text* attribute requires assistance via the 
+<<set_content_callback, 'content callback'>>.
+** The *&lt;script&gt;.src* attribute requires assistance via the <<set_script_callback, 'script callback'>>.
+** The *&lt;invoke&gt;* element requires assistance via the <<set_invoke_callback, 'invoke callback'>>
+and possibly the <<set_cancel_callback, 'cancel callback'>>.
+** The *&lt;send&gt;* element requires assistance via the <<set_send_callback, 'send callback'>>
+to support I/O Processors other than _"scxml"_, or targets other that the special ones, or remote
+destinations.
+
+(In the above list, a 'text' attribute actually refers to textual or non-SCXML markup content).
+

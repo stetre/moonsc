@@ -1,0 +1,146 @@
+
+== Callbacks
+
+MoonSC virtually supports all SCXML elements, although for some of them (or for some
+of their attributes) it needs assistance from the application and requires it
+via the callbacks described in this section.
+footnote:[In particular, by design MoonSC does not create new sessions autonomously,
+it does not support any I/O processor other than the SCXML Event I/O Processor,
+it does not have built-in networking capabilities, and it doesn't understand markup
+other than SCXML in its Lua-table equivalent representation. So, any time a
+service is invoked by a running session, or an event has to be routed to a
+remote destination, or a value must be retrieved from an URI, or some markup
+content must be interpreted, MoonSC invokes the intervention of the application
+via a callback.]
+A few callbacks are also provided to track the execution of the sessions and
+detect errors without the need of adding guards and logs in their statecharts
+using standard SCXML elements (this is useful expecially when developing
+and debugging statecharts).
+
+
+Callbacks are optional, and set with the functions listed below.
+Each of them, when called with a _nil_ or omitted _func_ argument, unsets the corresponding
+callback (if it was previously set).
+
+Note that all callbacks that are expected to fetch values must return them synchronously,
+thus they block the execution of all running sessions for the whole duration of
+the fetch operation (this may be a problem if the data has to be fetched over a
+network and the application is running multiple concurrent sessions).
+
+[[set_log_callback]]
+* *set_log_callback*(_func_) +
+[small]#Registers the function _func_ as the 'log callback', which is called
+as *_func(sessionid, label, expr)_* each time a &lt;log&gt; element is executed
+in the session identified by _sessionid_. The _label_ argument is the value of
+the 'label' attribute (or _nil_, if omitted), while _expr_ is the value resulting
+from evaluating the 'expr' attribute in the session's dedicated $$_ENV$$ (or _nil_,
+if omitted). If the callback is not set, no action is taken when a &lt;log&gt;
+element is executed.#
+
+[[set_script_callback]]
+* *set_script_callback*(_func_) +
+[small]#Registers the function _func_ as the 'script callback', which is called
+as *_code=func(src)_* each time a &lt;script&gt; element is initialized, if
+it has a 'src' attribute. In this case the callback is called passing it the _src_
+value (a string containing an URI) and is expected to fetch and return
+the corresponding script (a string containing valid Lua code), or _nil_ if it is unable
+to do so.#
+
+[[set_data_callback]]
+* *set_data_callback*(_func_) +
+[small]#Registers the function _func_ as the 'data callback', which is called as
+*_value=func(text, src)_* each time a &lt;data&gt; or &lt;assign&gt; element having
+a 'src' attribute or inline data specification is executed. The callback is expected
+to fetch and return the data value corresponding to the passed _text_ or _src_ argument,
+or return _nil_ if it is unable to do it.
+The _text_ argument, if not _nil_, is the inner content of the &lt;data&gt; or &lt;assign&gt;
+element being executed (a string that should contain inline data specification, possibly markup).
+The _src_ argument, if not _nil_, is the value of the 'src' attribute of the element (a string
+containing a URI). Only one of _text_ and _src_ is not _nil_.#
+
+[[set_content_callback]]
+* *set_content_callback*(_func_) +
+[small]#Registers the function _func_ as the 'content callback', which is called as
+*_value=func(text)_* each time a &lt;content&gt; element having inline specification
+is executed. The callback is expected to fetch and return the content value corresponding
+to the passed _text_ argument (a string that should contain inline specification, possibly markup),
+or return _nil_ if it is unable to do it.#
+
+[[set_send_callback]]
+* *set_send_callback*(_func_) +
+[small]#Registers the function _func_ as the 'send callback', which is called as
+*_success=_func(sendinfo)_* each time a &lt;send&gt; element with a valid 'type' is
+executed that MoonSC does not know how to route. +
+The callback receives as argument a <<sendinfo, _sendinfo_>> table with information from the
+https://www.w3.org/TR/scxml/#send[&lt;send&gt;] element, and is expected to route the message.
+The destination of the message may be either a local session or a remote entity. In the
+former case the application must translate the _sendinfo_ to a _eventinfo_ and
+<<send, send>>(&nbsp;) the event to the destination session. In the latter case
+it must serialize the message properly and send it to the destination by appropriate means. +
+If the routing succeeds, the callback must return _true_.
+If it fails, the callback may either return _false_ (or _nil_) or raise a Lua error,
+causing an 'error.communication' or an 'error.execution' (respectively) to be sent back
+to the sender session. +
+*Note:* the 'send callback' is called for a &lt;send&gt; element
+only if its 'type' attribute has a value for which an entry exists in the
+<<system_variables,  *$$_$$ioprocessors*>> system variable. If not, an error event is sent back
+to the sender session, signalling that the I/O processor type is not supported. To add an entry,
+use the <<add_ioprocessor, add_ioprocessor>>(&nbsp;) function.#
+
+
+[[set_invoke_callback]]
+* *set_invoke_callback*(_func_) +
+[small]#Registers the function _func_ as the 'invoke callback', which is called as
+*_childid=func(invokeinfo)_* each time a &lt;invoke&gt; element is executed. +
+The callback receives as argument a <<invokeinfo, _invokeinfo_>> table with information
+from the https://www.w3.org/TR/scxml/#invoke[&lt;invoke&gt;] element,
+and is expected to invoke the requested service. +
+The service may be provided either by a new local session or by a remote entity.
+If the service provider is a local session, the callback is expected to create it
+with <<create, create>>(&nbsp;) passing it the _invokeinfo_, and return the
+sessionid assigned to it (MoonSC will use this to automatically route events
+generated with &lt;send&gt; of the 'scxml' type).
+If the service provider is remote, the callback is expected to deliver the request
+to it in the appropriate format and by appropriate means, and return _nil_ (in this
+case the application is also in charge of properly routing any message subsequently
+exchanged by the parent session and the invoked service, which it can do with the
+<<set_send_callback, 'send callback'>> and the <<send, send>>(&nbsp;) function).#
+
+[[set_cancel_callback]]
+* *set_cancel_callback*(_func_) +
+[small]#Registers the function _func_ as the 'cancel callback', which is called as
+*_func(invokeinfo, childid)_* each time a &lt;invoke&gt; element is cancelled due
+to its containing state being exited while the invocation is still ongoing. +
+The callback receives as argument the same <<invokeinfo, _invokeinfo_>> that was passed
+to the <<set_invoke_callback, 'invoke callback'>>, and the _childid_ returned by it 
+(if any), and it is expected to <<cancel, cancel>>(&nbsp;) the child, if it is a local
+session, or to signal the need for cancellation to the remote service provider.#
+
+[[set_exit_callback]]
+* *set_exit_callback*(_func_) +
+[small]#Registers the function _func_ as the 'exit callback', which is called as
+*_func(sessionid, reason, invokeinfo)_* when a session exits. The _reason_ argument
+is a string that may be either _'done'_ (normal exit) or _'cancelled'_ (session
+cancelled via the <<cancel, cancel>>(&nbsp;) function), and _invokeinfo_ argument
+is the value passed at session creation via <<create, create>>(&nbsp;).#
+
+[[set_error_callback]]
+* *set_error_callback*(_func_) +
+[small]#Registers the function _func_ as the 'exit callback', which is called as
+*_func(sessionid, name, errmsg)_* when an execution or communication error
+occurs during the execution of an SCXML element in a running session. The
+_name_ argument is either _'error.execution'_ or _'error.communication'_, and
+_errmsg_ is a message indicating the occurred error and the offending element.
+(Note that by default MoonSC is robust with respect to these kind of errors, i.e.
+when an error occurs in a session it just raises an error event and continues
+the execution as dictated by the SCXML Recommendation. By setting this callback,
+the application may additionally track these errors and possibly exit as soon
+as one is detected).#
+
+[[set_trace_callback]]
+* *set_trace_callback*(_func_) +
+[small]#Registers the function _func_ as the 'trace callback', which is called as
+*_func(sessionid, message)_* when something of interest happens during the execution
+of a running session (e.g. a change of state configuration). Mainly for debug
+and test purposes.#
+

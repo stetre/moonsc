@@ -1,0 +1,48 @@
+
+== Structs
+
+* [[eventinfo]]
+[small]#*eventinfo* = { +
+_type_: '_external_' | '_internal_' | '_platform_', +
+_name_: event name (a string), +
+_sendid_: id assigned by sender (a string, opt.), +
+_origin_: URI to be used as  &lt;send&gt;.target in replies (a string, opt.), +
+_origintype_: I/O processor to be used as &lt;send&gt;.type in replies (a string, opt.), +
+_invokeid_: the _invokeid_ assigned by the parent session (a string, only in child-to-parent messages), +
+_data_: the contained <<data, data>> (opt.), +
+} (rfr. https://www.w3.org/TR/scxml/#SystemVariables[5.10.1 The Internal Structure of Events])#
+
+* [[sendinfo]]
+[small]#*sendinfo* = { +
+_sourceid_: the sessionid of the sending session (a string), +
+_type_: the value of 'type', or resulting from evaluating 'typeexpr' (a string), +
+_target_: the value of 'target', or resulting from evaluating 'targetexpr' (a string, opt.), +
+_event_:  the value of 'event', or resulting from evaluating 'eventexpr' (a string, opt.), +
+_sendid_: the 'id' of the send (opt.), +
+_data_: the contained <<data, data>> (opt.), +
+} (rfr. https://www.w3.org/TR/scxml/#send[6.2 &lt;send&gt;])#
+
+* [[invokeinfo]]
+[small]#*invokeinfo* = { +
+_parentid_: the sessionid of the parent session, if local (a string, opt.), +
+_invokeid_: the 'id' assigned by the parent session (a string, opt.), +
+_type_: the value of 'type', or resulting from evaluating 'typeexpr' (a string), +
+_autoforward_: the value of 'autoforward' (a boolean), +
+_src_:  the value of 'src', or resulting from evaluating 'srcexpr' (a string, opt.), +
+_data_: the contained <<data, data>> (opt.), +
+} (rfr. https://www.w3.org/TR/scxml/#invoke[6.4 &lt;invoke&gt;])#
+
+* [[data]]
+[small]#*data* = a table with name-value pairs (_data[name]=value_). +
+When used to represent the data contained in a &lt;send&gt; or &lt;invoke&gt; element,
+the _data_ table may contain the name-value pair for the 'content' attribute
+(_data.content_, a string) and/or all those for the names in the 'namelist' attribute
+and for the variables in any &lt;param&gt; children.
+In case of duplicate names, the last encountered value is used ('content' is evaluated
+before 'namelist', which is evaluated before &lt;param&gt; children, which are 
+evaluated in document order, so the last &lt;param&gt; wins).#
+
+Note: all these 'structs' (tables, actually) are passed around by reference in MoonSC,
+so for example when passing a <<data, _data_>> table to the <<send, send>>(&nbsp;)
+function, the caller must take care not to alter its contents.
+

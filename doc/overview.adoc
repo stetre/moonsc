@@ -1,0 +1,60 @@
+
+== Overview
+
+A MoonSC *application* executes one or more concurrent SCXML sessions each defined
+by a SCXML statechart, as shown in the sketched example below:
+
+.MoonSC application (sketch)
+[source,lua,indent=1]
+----
+local moonsc = require("moonsc")
+-- ...
+-- Optionally set callbacks to control the execution:
+moonsc.set_log_callback(mylogfunc)
+-- ...
+-- Create and start any initial session:
+moonsc.create('mysessionid', mystatechart)
+moonsc.start('mysessionid')
+-- ...
+-- Enter the main loop:
+while moonsc.trigger() do
+  -- ...
+end
+----
+
+The application code first sets a few <<callbacks, *callbacks*>> to control some aspects
+of the execution (e.g. logs, event routing, invocations), then it creates and starts
+any initial session, and finally it enters its *main loop*, from which at each iteration
+it is expected to call the <<trigger, trigger>>(&nbsp;)
+function that executes any enabled transitions in the sessions that are running.
+
+Any *session* running in the application is created by the application itself using the
+<<create, create>>(&nbsp;) function, passing it an unique
+session identifier, the statechart defining the session's behavior, and
+possibly a set of parameters in case the session is created because of the
+execution of an &lt;invoke&gt; element in an already existing session (the 'parent session').
+
+When created, a session is by default still not running. It can be started either by
+passing _start=true_ when creating it, or later by calling the <<start, start>>(&nbsp;) function.
+
+The *statechart* is passed in form of a Lua table equivalent to an SCXML document,
+as described in the <<statecharts, 'Statecharts'>> section. A statechart in this
+form may be either written directly in Lua or produced as a result of parsing an
+actual SCXML document
+footnote:[The parsing of actual SCXML documents to produce statecharts in form of Lua
+tables is outside the scope of MoonSC and, if needed, delegated to external tools.].
+The same statechart can be used to execute multiple sessions, i.e. one or more independent
+instances of the same state machine, either concurrently running or otherwise.
+
+Each session has a
+http://www.lua.org/manual/5.3/manual.html#2.2[dedicated Lua environment ($$_ENV$$)],
+that represents its *Data Model* and provides it with encapsulation.
+The <<luadatamodel, 'lua' Data Model>> is the only data model supported by MoonSC.
+Any chunk of Lua code contained in the statechart's elements (cond, expr, &lt;script&gt;,
+etc) is executed in the session's dedicated environment.
+System variables as per the SCXML recommendation and any &lt;data&gt; variables are also
+defined there as global variables.
+
+The application and sessions *communicate* with each other by standard means,
+i.e. via SCXML events as described in the <<events, 'Events'>> section.
+

@@ -1,0 +1,47 @@
+
+[[events]]
+
+== Events
+
+The application and the running sessions communicate with each other via 
+https://www.w3.org/TR/scxml/#events[SCXML events].
+
+Sessions  receive events as part of the standard transition triggering mechanism,
+and, by executing *&lt;send&gt;* and *&lt;raise&gt;* elements they may send events
+to other sessions, to external entities (through the application), or to themselves.
+
+The application can <<send, send>>(&nbsp;) external events to sessions,
+it can <<raise, raise>>(&nbsp;) internal or platform events in them, and by setting
+the <<set_send_callback, 'send callback'>> it can receive any session-originated
+&lt;send&gt; that MoonSC does not know how (or if) to route.
+
+MoonSC by itself directly supports only the
+link:++https://www.w3.org/TR/scxml/#SCXMLEventProcessor++[SCXML Event I/O Processor],
+and is able to route automatically only events exchanged by local sessions using &lt;send&gt;
+elements having 'type'=_"scxml"_, and the special 'target' attributes prescribed by the SCXML
+Recommendation (_'$$#_internal$$'_, _'$$#_scxml_sessionid$$'_, _'$$#_parent$$'_, and _'$$#_invokeid$$'_).
+
+Any &lt;send&gt; issued by a local session having a 'type' different than _"scxml"_ or a 'target'
+that is not a special one (or that is not recognized as targeting a local session),
+causes MoonSC to call the <<set_send_callback, 'send callback'>> and delegate to the application
+the routing of the message.
+//@@If the callback is not set, or if an error occurs during its execution, an 'error.execution' event is raised in the sending session.
+
+[[send]]
+* *send*(_sessionid_, <<eventinfo, eventinfo>>) +
+*send*(_sessionid_, _name_, [<<data, _data_>>]) +
+[small]#Sends an event to the given session, by inserting it
+in the session's external or internal event queue, depending on
+the value of _eventinfo.type_.
+The second version of this function inserts an _'external'_ event with the given
+_name_ (a string) and optional _data_ in the external event queue.#
+
+[[raise]]
+* *raise*(_sessionid_, <<eventinfo, eventinfo>>) +
+*raise*(_sessionid_, _name_,  [<<data, _data_>>]) +
+[small]#Raises an event in the given session, by inserting it in the
+session's internal queue.
+The second version of this function inserts a _'platform'_ event with the given
+_name_ (a string) and optional _data_ in the external event queue.#
+
+

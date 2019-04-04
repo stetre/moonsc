@@ -1,0 +1,29 @@
+
+== Additional utilities
+
+[[set_env_template]]
+* *set_env_template*(_env_) +
+[small]#Sets the template for the Lua environments dedicated to sessions (e.g. for sandboxing). +
+By default, the template environment is a shallow copy of the main environment (_$$_ENV$$_)
+as it is when the MoonSC module is loaded with
+http://www.lua.org/manual/5.3/manual.html#pdf-require[require]().#
+
+[[now]]
+* _timestamp_ = *now*( ) +
+[small]#Returns the current system time, in seconds. The system time is relative to
+an unspecified point in the past, that depends on the underlying function used to
+retrieve time from the operating system. +
+Session can access this same function from their dedicated $$_ENV$$, where it is
+global and defined as _Now(&nbsp;)_.#
+
+[[since]]
+* _dt_ = *since*(_timestamp_) +
+[small]#Returns the time elapsed from the point in time given by _timestamp_. +
+Session can access this same function from their dedicated $$_ENV$$, where it is
+global and defined as _Since(&nbsp;)_.#
+
+[[tostring]]
+* _string_ = *tostring*(_sessionid_) +
+[small]#Returns a printable description of the statechart for the session identified
+by _sessionid_, with all its elements arranged in a tree, and their attributes and values.#
+

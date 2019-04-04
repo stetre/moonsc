@@ -1,0 +1,112 @@
+
+[[luadatamodel]]
+== Data Model
+
+MoonSC supports a
+https://www.w3.org/TR/scxml/#data-module[Data Model] based on the
+http://www.lua.org[Lua language] (version >= 5.3),
+by assigning to each SCXML session a
+http://www.lua.org/manual/5.3/manual.html#2.2[dedicated Lua environment ($$_ENV$$)]
+where to define data and execute content. The dedicated $$_ENV$$ is customizable
+by providing a template via the <<set_env_template, set_env_template>>(&nbsp;) function.
+
+MoonSC assumes that the _"lua"_ value for the 'datamodel' attribute in the &lt;scxml&gt;
+element refers to this Data Model, and assumes this same value as the default if the
+'datamodel' attribute is omitted.
+
+The Lua Data Model is described here, loosely following the specification given in 
+https://www.w3.org/TR/scxml/#ecma-profile[appendix B.2] of the SCXML Recommendation
+for the ECMAScript Data Model.
+
+. *&lt;datamodel&gt;, &lt;data&gt;* - 
+For each &lt;data&gt; element in the statechart, MoonSC creates in $$_ENV$$ a global
+variable whose name is the value of the 'id' attribute of &lt;data&gt;.
+By default, the variable is assigned the _nil_ value.
+If the &lt;data&gt; element has  a 'expr' attribute, the Lua chunk _"return "..expr_
+is executed in $$_ENV$$ and the returned value is assigned to the variable.
+Otherwise if the &lt;data&gt; element has a 'src' attribute, or contains an inline
+specification, the <<set_data_callback, 'data callback'>> is called to resolve it and the
+returned value is assigned to the variable.
+The evaluation and assignment take place at the time indicated by the 'binding' attribute
+on the &lt;scxml&gt; element.
+
+. *Scoping* -
+All &lt;data&gt; elements are defined as global variables in the $$_ENV$$ dedicated to the
+session, and thus are accessible from any state. &lt;data&gt; elements are guaranteed to be
+created in document order only if they are children of the same &lt;datamodel&gt; element,
+otherwise they are not. When *early binding* is selected, all &lt;data&gt; elements are created
+and bound to their values at initialization time. When *late binding* is selected, &lt;data&gt;
+elements are created at initialization time but bound to their values only when the state
+containing them is first entered.
+
+. *Conditional expressions* -
+Conditional expressions are executed as _"return "..cond_ in the $$_ENV$$, and their returned
+value is interpreted as a boolean value using Lua standard rules on the matter (_false_ and _nil_
+are falsy, _true_ and any other value are truthy). 
+
+. *In(&nbsp;) predicate* -
+The _In(stateid)_ predicate is predefined as a global function in the dedicated $$_ENV$$.
+It returns _true_ if the state having the passed id is active, otherwise it returns _false_.
+
+. *Location expressions* -
+Any Lua left-hand-side expression is accepted as location expression.
+
+. *Value expressions* -
+Any Lua expression is accepted as value expression.
+
+. *&lt;content&gt;* -
+If a &lt;content&gt; element has a 'expr' attribute, the Lua chunk _"return "..expr_
+is executed in $$_ENV$$ and the returned value is used as the content value. Otherwise
+if the &lt;content&gt; element contains inline text,
+the <<set_content_callback, 'content callback'>> is called to resolve it and the returned
+value is used as the content value.
+In both cases the evaluation is done at the time the &lt;content&gt; element is executed.
+
+. *&lt;assign&gt;* -
+When an &lt;assign&gt; element is executed, the 'expr' or inline content are treated
+in the same way as for &lt;data&gt; elements (see point 1), and the obtained value is
+assigned to the global variable (in $$_ENV$$) specified by the 'location' attribute.
+
+. *System variables* -
+MoonSC defines a Lua global variable in the session's dedicated $$_ENV$$ for each variable
+defined in https://www.w3.org/TR/scxml/#SystemVariables[section 5.10] of the SCML Recommendation.
+Such variables are to be intended as read-only by the statechart code authors and care should
+be taken not to overwrite them.
+See the <<system_variables, System Variables>> section for more details.
+
+. *Serialization* -
+The serialization of events to/from other message formats in order to communicate with
+remote entities is a concern of the application and outside the scope of MoonSC.
+
+. *&lt;script&gt;* -
+If a &lt;script&gt; element has a 'src' attribute, this is resolved by calling the
+<<set_script_allback, 'script callback'>> and interpreting the returned value (a string)
+as Lua code. Otherwise if it has textual content, this is interpreted as the Lua code for
+the script. In both cases, the execution of the &lt;script&gt; element causes the
+Lua code to be executed in the sessions's $$_ENV$$.
+
+. *&lt;foreach&gt;* -
+A &lt;foreach&gt; element is executed in the $$_ENV$$ iterating with the standard
+Lua http://www.lua.org/manual/5.3/manual.html#pdf-pairs[pairs](&nbsp;) function,
+over a shallow copy of the value returned by evaluating the 'array' attribute (that
+thus must result in a Lua table).
+
+. *&lt;log&gt;* -
+When a &lt;log&gt; element is executed, its attributes are evaluated and passed to the
+<<set_log_callback, 'log callback'>>, together with the session identifier.
+If the log callback is not set, no action is taken. The 'expr' attribute is evaluated in
+the same way as for the &lt;data&gt; element (see point 1). The _nil_ value is passed to
+the callback for any omitted attribute.
+
+. *time intervals* -
+The 'delay' attribute in &lt;send&gt; elements may be either a string composed
+by a number immediately followed by a 's' (for seconds) or 'ms' (for milliseconds), or simply
+as a number, in which case it is interpreted as seconds.
+
+. *Now(&nbsp;) and Since(&nbsp;)* -
+The _Now()_ and _Since()_ functions are predefined on the dedicated $$_ENV$$ to give to
+statecharts access to the MoonSC <<now, now>>(&nbsp;) and <<since, since>>(&nbsp;) functions
+(note that these functions are platform-specific, i.e. they are not dictated by the SCXML
+Recommendation).
+
+

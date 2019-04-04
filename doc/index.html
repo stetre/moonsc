@@ -1,0 +1,1855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<meta name="author" content="Stefano Trettel">
+<title>MoonSC Reference Manual</title>
+<style>
+/*! normalize.css v2.1.2 | MIT License | git.io/normalize */
+/* ========================================================================== HTML5 display definitions ========================================================================== */
+/** Correct `block` display not defined in IE 8/9. */
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary { display: block; }
+
+/** Correct `inline-block` display not defined in IE 8/9. */
+audio, canvas, video { display: inline-block; }
+
+/** Prevent modern browsers from displaying `audio` without controls. Remove excess height in iOS 5 devices. */
+audio:not([controls]) { display: none; height: 0; }
+
+/** Address `[hidden]` styling not present in IE 8/9. Hide the `template` element in IE, Safari, and Firefox < 22. */
+[hidden], template { display: none; }
+
+script { display: none !important; }
+
+/* ========================================================================== Base ========================================================================== */
+/** 1. Set default font family to sans-serif. 2. Prevent iOS text size adjust after orientation change, without disabling user zoom. */
+html { font-family: sans-serif; /* 1 */ -ms-text-size-adjust: 100%; /* 2 */ -webkit-text-size-adjust: 100%; /* 2 */ }
+
+/** Remove default margin. */
+body { margin: 0; }
+
+/* ========================================================================== Links ========================================================================== */
+/** Remove the gray background color from active links in IE 10. */
+a { background: transparent; }
+
+/** Address `outline` inconsistency between Chrome and other browsers. */
+a:focus { outline: thin dotted; }
+
+/** Improve readability when focused and also mouse hovered in all browsers. */
+a:active, a:hover { outline: 0; }
+
+/* ========================================================================== Typography ========================================================================== */
+/** Address variable `h1` font-size and margin within `section` and `article` contexts in Firefox 4+, Safari 5, and Chrome. */
+h1 { font-size: 2em; margin: 0.67em 0; }
+
+/** Address styling not present in IE 8/9, Safari 5, and Chrome. */
+abbr[title] { border-bottom: 1px dotted; }
+
+/** Address style set to `bolder` in Firefox 4+, Safari 5, and Chrome. */
+b, strong { font-weight: bold; }
+
+/** Address styling not present in Safari 5 and Chrome. */
+dfn { font-style: italic; }
+
+/** Address differences between Firefox and other browsers. */
+hr { -moz-box-sizing: content-box; box-sizing: content-box; height: 0; }
+
+/** Address styling not present in IE 8/9. */
+mark { background: #ff0; color: #000; }
+
+/** Correct font family set oddly in Safari 5 and Chrome. */
+code, kbd, pre, samp { font-family: monospace, serif; font-size: 1em; }
+
+/** Improve readability of pre-formatted text in all browsers. */
+pre { white-space: pre-wrap; }
+
+/** Set consistent quote types. */
+q { quotes: "\201C" "\201D" "\2018" "\2019"; }
+
+/** Address inconsistent and variable font size in all browsers. */
+small { font-size: 80%; }
+
+/** Prevent `sub` and `sup` affecting `line-height` in all browsers. */
+sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
+
+sup { top: -0.5em; }
+
+sub { bottom: -0.25em; }
+
+/* ========================================================================== Embedded content ========================================================================== */
+/** Remove border when inside `a` element in IE 8/9. */
+img { border: 0; }
+
+/** Correct overflow displayed oddly in IE 9. */
+svg:not(:root) { overflow: hidden; }
+
+/* ========================================================================== Figures ========================================================================== */
+/** Address margin not present in IE 8/9 and Safari 5. */
+figure { margin: 0; }
+
+/* ========================================================================== Forms ========================================================================== */
+/** Define consistent border, margin, and padding. */
+fieldset { border: 1px solid #c0c0c0; margin: 0 2px; padding: 0.35em 0.625em 0.75em; }
+
+/** 1. Correct `color` not being inherited in IE 8/9. 2. Remove padding so people aren't caught out if they zero out fieldsets. */
+legend { border: 0; /* 1 */ padding: 0; /* 2 */ }
+
+/** 1. Correct font family not being inherited in all browsers. 2. Correct font size not being inherited in all browsers. 3. Address margins set differently in Firefox 4+, Safari 5, and Chrome. */
+button, input, select, textarea { font-family: inherit; /* 1 */ font-size: 100%; /* 2 */ margin: 0; /* 3 */ }
+
+/** Address Firefox 4+ setting `line-height` on `input` using `!important` in the UA stylesheet. */
+button, input { line-height: normal; }
+
+/** Address inconsistent `text-transform` inheritance for `button` and `select`. All other form control elements do not inherit `text-transform` values. Correct `button` style inheritance in Chrome, Safari 5+, and IE 8+. Correct `select` style inheritance in Firefox 4+ and Opera. */
+button, select { text-transform: none; }
+
+/** 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio` and `video` controls. 2. Correct inability to style clickable `input` types in iOS. 3. Improve usability and consistency of cursor style between image-type `input` and others. */
+button, html input[type="button"], input[type="reset"], input[type="submit"] { -webkit-appearance: button; /* 2 */ cursor: pointer; /* 3 */ }
+
+/** Re-set default cursor for disabled elements. */
+button[disabled], html input[disabled] { cursor: default; }
+
+/** 1. Address box sizing set to `content-box` in IE 8/9. 2. Remove excess padding in IE 8/9. */
+input[type="checkbox"], input[type="radio"] { box-sizing: border-box; /* 1 */ padding: 0; /* 2 */ }
+
+/** 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome. 2. Address `box-sizing` set to `border-box` in Safari 5 and Chrome (include `-moz` to future-proof). */
+input[type="search"] { -webkit-appearance: textfield; /* 1 */ -moz-box-sizing: content-box; -webkit-box-sizing: content-box; /* 2 */ box-sizing: content-box; }
+
+/** Remove inner padding and search cancel button in Safari 5 and Chrome on OS X. */
+input[type="search"]::-webkit-search-cancel-button, input[type="search"]::-webkit-search-decoration { -webkit-appearance: none; }
+
+/** Remove inner padding and border in Firefox 4+. */
+button::-moz-focus-inner, input::-moz-focus-inner { border: 0; padding: 0; }
+
+/** 1. Remove default vertical scrollbar in IE 8/9. 2. Improve readability and alignment in all browsers. */
+textarea { overflow: auto; /* 1 */ vertical-align: top; /* 2 */ }
+
+/* ========================================================================== Tables ========================================================================== */
+/** Remove most spacing between table cells. */
+table { border-collapse: collapse; border-spacing: 0; }
+
+meta.foundation-mq-small { font-family: "only screen and (min-width: 768px)"; width: 768px; }
+
+meta.foundation-mq-medium { font-family: "only screen and (min-width:1280px)"; width: 1280px; }
+
+meta.foundation-mq-large { font-family: "only screen and (min-width:1440px)"; width: 1440px; }
+
+*, *:before, *:after { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+
+html, body { font-size: 100%; }
+
+body { background: white; color: #222222; padding: 0; margin: 0; font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; font-weight: normal; font-style: normal; line-height: 1; position: relative; cursor: auto; }
+
+a:hover { cursor: pointer; }
+
+img, object, embed { max-width: 100%; height: auto; }
+
+object, embed { height: 100%; }
+
+img { -ms-interpolation-mode: bicubic; }
+
+#map_canvas img, #map_canvas embed, #map_canvas object, .map_canvas img, .map_canvas embed, .map_canvas object { max-width: none !important; }
+
+.left { float: left !important; }
+
+.right { float: right !important; }
+
+.text-left { text-align: left !important; }
+
+.text-right { text-align: right !important; }
+
+.text-center { text-align: center !important; }
+
+.text-justify { text-align: justify !important; }
+
+.hide { display: none; }
+
+.antialiased, body { -webkit-font-smoothing: antialiased; }
+
+img { display: inline-block; vertical-align: middle; }
+
+textarea { height: auto; min-height: 50px; }
+
+select { width: 100%; }
+
+p.lead, .paragraph.lead > p, #preamble > .sectionbody > .paragraph:first-of-type p { font-size: 1.21875em; line-height: 1.6; }
+
+.subheader, .admonitionblock td.content > .title, .audioblock > .title, .exampleblock > .title, .imageblock > .title, .listingblock > .title, .literalblock > .title, .stemblock > .title, .openblock > .title, .paragraph > .title, .quoteblock > .title, table.tableblock > .title, .verseblock > .title, .videoblock > .title, .dlist > .title, .olist > .title, .ulist > .title, .qlist > .title, .hdlist > .title { line-height: 1.4; color: #003b6b; font-weight: 300; margin-top: 0.2em; margin-bottom: 0.5em; }
+
+/* Typography resets */
+div, dl, dt, dd, ul, ol, li, h1, h2, h3, #toctitle, .sidebarblock > .content > .title, h4, h5, h6, pre, form, p, blockquote, th, td { margin: 0; padding: 0; direction: ltr; }
+
+/* Default Link Styles */
+a { color: #00579e; text-decoration: none; line-height: inherit; }
+a:hover, a:focus { color: #333333; }
+a img { border: none; }
+
+/* Default paragraph styles */
+p { font-family: Arial, sans-serif; font-weight: normal; font-size: 1em; line-height: 1.6; margin-bottom: 0.75em; text-rendering: optimizeLegibility; }
+p aside { font-size: 0.875em; line-height: 1.35; font-style: italic; }
+
+/* Default header styles */
+h1, h2, h3, #toctitle, .sidebarblock > .content > .title, h4, h5, h6 { font-family: Arial, sans-serif; font-weight: normal; font-style: normal; color: #7b2d00; text-rendering: optimizeLegibility; margin-top: 0.5em; margin-bottom: 0.5em; line-height: 1.2125em; }
+h1 small, h2 small, h3 small, #toctitle small, .sidebarblock > .content > .title small, h4 small, h5 small, h6 small { font-size: 60%; color: #ff6b15; line-height: 0; }
+
+h1 { font-size: 2.125em; }
+
+h2 { font-size: 1.6875em; }
+
+h3, #toctitle, .sidebarblock > .content > .title { font-size: 1.375em; }
+
+h4 { font-size: 1.125em; }
+
+h5 { font-size: 1.125em; }
+
+h6 { font-size: 1em; }
+
+hr { border: solid #dddddd; border-width: 1px 0 0; clear: both; margin: 1.25em 0 1.1875em; height: 0; }
+
+/* Helpful Typography Defaults */
+em, i { font-style: italic; line-height: inherit; }
+
+strong, b { font-weight: bold; line-height: inherit; }
+
+small { font-size: 60%; line-height: inherit; }
+
+code { font-family: Consolas, "Liberation Mono", Courier, monospace; font-weight: bold; color: #003426; }
+
+/* Lists */
+ul, ol, dl { font-size: 1em; line-height: 1.6; margin-bottom: 0.75em; list-style-position: outside; font-family: Arial, sans-serif; }
+
+ul, ol { margin-left: 1.5em; }
+ul.no-bullet, ol.no-bullet { margin-left: 1.5em; }
+
+/* Unordered Lists */
+ul li ul, ul li ol { margin-left: 1.25em; margin-bottom: 0; font-size: 1em; /* Override nested font-size change */ }
+ul.square li ul, ul.circle li ul, ul.disc li ul { list-style: inherit; }
+ul.square { list-style-type: square; }
+ul.circle { list-style-type: circle; }
+ul.disc { list-style-type: disc; }
+ul.no-bullet { list-style: none; }
+
+/* Ordered Lists */
+ol li ul, ol li ol { margin-left: 1.25em; margin-bottom: 0; }
+
+/* Definition Lists */
+dl dt { margin-bottom: 0.3em; font-weight: bold; }
+dl dd { margin-bottom: 0.75em; }
+
+/* Abbreviations */
+abbr, acronym { text-transform: uppercase; font-size: 90%; color: black; border-bottom: 1px dotted #dddddd; cursor: help; }
+
+abbr { text-transform: none; }
+
+/* Blockquotes */
+blockquote { margin: 0 0 0.75em; padding: 0.5625em 1.25em 0 1.1875em; border-left: 1px solid #dddddd; }
+blockquote cite { display: block; font-size: 0.8125em; color: #e15200; }
+blockquote cite:before { content: "\2014 \0020"; }
+blockquote cite a, blockquote cite a:visited { color: #e15200; }
+
+blockquote, blockquote p { line-height: 1.6; color: #333333; }
+
+/* Microformats */
+.vcard { display: inline-block; margin: 0 0 1.25em 0; border: 1px solid #dddddd; padding: 0.625em 0.75em; }
+.vcard li { margin: 0; display: block; }
+.vcard .fn { font-weight: bold; font-size: 0.9375em; }
+
+.vevent .summary { font-weight: bold; }
+.vevent abbr { cursor: auto; text-decoration: none; font-weight: bold; border: none; padding: 0 0.0625em; }
+
+@media only screen and (min-width: 768px) { h1, h2, h3, #toctitle, .sidebarblock > .content > .title, h4, h5, h6 { line-height: 1.4; }
+  h1 { font-size: 2.75em; }
+  h2 { font-size: 2.3125em; }
+  h3, #toctitle, .sidebarblock > .content > .title { font-size: 1.6875em; }
+  h4 { font-size: 1.4375em; } }
+/* Tables */
+table { background: white; margin-bottom: 1.25em; border: solid 1px #d8d8ce; }
+table thead, table tfoot { background: -webkit-linear-gradient(top, #add386, #90b66a); font-weight: bold; }
+table thead tr th, table thead tr td, table tfoot tr th, table tfoot tr td { padding: 0.5em 0.625em 0.625em; font-size: inherit; color: white; text-align: left; }
+table tr th, table tr td { padding: 0.5625em 0.625em; font-size: inherit; color: #6d6e71; }
+table tr.even, table tr.alt, table tr:nth-of-type(even) { background: #edf2f2; }
+table thead tr th, table tfoot tr th, table tbody tr td, table tr td, table tfoot tr td { display: table-cell; line-height: 1.4; }
+
+h1, h2, h3, #toctitle, .sidebarblock > .content > .title, h4, h5, h6 { line-height: 1.4; }
+
+a:hover, a:focus { text-decoration: underline; }
+
+.clearfix:before, .clearfix:after, .float-group:before, .float-group:after { content: " "; display: table; }
+.clearfix:after, .float-group:after { clear: both; }
+
+*:not(pre) > code { font-size: inherit; font-style: normal !important; letter-spacing: 0; padding: 3px 2px 1px 2px; background-color: #eeeeee; border: 1px solid #dddddd; -webkit-border-radius: 0; border-radius: 0; line-height: inherit; }
+
+pre, pre > code { line-height: 1.6; color: black; font-family: Consolas, "Liberation Mono", Courier, monospace; font-weight: normal; }
+
+.keyseq { color: #333333; }
+
+kbd { display: inline-block; color: black; font-size: 0.75em; line-height: 1.4; background-color: #f7f7f7; border: 1px solid #ccc; -webkit-border-radius: 3px; border-radius: 3px; -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 0.1em white inset; box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 0.1em white inset; margin: -0.15em 0.15em 0 0.15em; padding: 0.2em 0.6em 0.2em 0.5em; vertical-align: middle; white-space: nowrap; }
+
+.keyseq kbd:first-child { margin-left: 0; }
+
+.keyseq kbd:last-child { margin-right: 0; }
+
+.menuseq, .menu { color: black; }
+
+b.button:before, b.button:after { position: relative; top: -1px; font-weight: normal; }
+
+b.button:before { content: "["; padding: 0 3px 0 2px; }
+
+b.button:after { content: "]"; padding: 0 2px 0 3px; }
+
+#header, #content, #footnotes, #footer { width: 100%; margin-left: auto; margin-right: auto; margin-top: 0; margin-bottom: 0; max-width: 62.5em; *zoom: 1; position: relative; padding-left: 1.5em; padding-right: 1.5em; }
+#header:before, #header:after, #content:before, #content:after, #footnotes:before, #footnotes:after, #footer:before, #footer:after { content: " "; display: table; }
+#header:after, #content:after, #footnotes:after, #footer:after { clear: both; }
+
+#content { margin-top: 1.25em; }
+
+#content:before { content: none; }
+
+#header > h1:first-child { color: #7b2d00; margin-top: 2.25rem; margin-bottom: 0; }
+#header > h1:first-child + #toc { margin-top: 8px; border-top: 1px solid #dddddd; }
+#header > h1:only-child, body.toc2 #header > h1:nth-last-child(2) { border-bottom: 1px solid #dddddd; padding-bottom: 8px; }
+#header .details { border-bottom: 1px solid #dddddd; line-height: 1.45; padding-top: 0.25em; padding-bottom: 0.25em; padding-left: 0.25em; color: #e15200; display: -ms-flexbox; display: -webkit-flex; display: flex; -ms-flex-flow: row wrap; -webkit-flex-flow: row wrap; flex-flow: row wrap; }
+#header .details span:first-child { margin-left: -0.125em; }
+#header .details span.email a { color: #333333; }
+#header .details br { display: none; }
+#header .details br + span:before { content: "\00a0\2013\00a0"; }
+#header .details br + span.author:before { content: "\00a0\22c5\00a0"; color: #333333; }
+#header .details br + span#revremark:before { content: "\00a0|\00a0"; }
+#header #revnumber { text-transform: capitalize; }
+#header #revnumber:after { content: "\00a0"; }
+
+#content > h1:first-child:not([class]) { color: #7b2d00; border-bottom: 1px solid #dddddd; padding-bottom: 8px; margin-top: 0; padding-top: 1rem; margin-bottom: 1.25rem; }
+
+#toc { border-bottom: 0 solid #dddddd; padding-bottom: 0.5em; }
+#toc > ul { margin-left: 0.125em; }
+#toc ul.sectlevel0 > li > a { font-style: italic; }
+#toc ul.sectlevel0 ul.sectlevel1 { margin: 0.5em 0; }
+#toc ul { font-family: Arial, sans-serif; list-style-type: none; }
+#toc a { text-decoration: none; }
+#toc a:active { text-decoration: underline; }
+
+#toctitle { color: #003b6b; font-size: 1.2em; }
+
+@media only screen and (min-width: 768px) { #toctitle { font-size: 1.375em; }
+  body.toc2 { padding-left: 15em; padding-right: 0; }
+  #toc.toc2 { margin-top: 0 !important; background-color: white; position: fixed; width: 15em; left: 0; top: 0; border-right: 1px solid #dddddd; border-top-width: 0 !important; border-bottom-width: 0 !important; z-index: 1000; padding: 1.25em 1em; height: 100%; overflow: auto; }
+  #toc.toc2 #toctitle { margin-top: 0; font-size: 1.2em; }
+  #toc.toc2 > ul { font-size: 0.9em; margin-bottom: 0; }
+  #toc.toc2 ul ul { margin-left: 0; padding-left: 1em; }
+  #toc.toc2 ul.sectlevel0 ul.sectlevel1 { padding-left: 0; margin-top: 0.5em; margin-bottom: 0.5em; }
+  body.toc2.toc-right { padding-left: 0; padding-right: 15em; }
+  body.toc2.toc-right #toc.toc2 { border-right-width: 0; border-left: 1px solid #dddddd; left: auto; right: 0; } }
+@media only screen and (min-width: 1280px) { body.toc2 { padding-left: 20em; padding-right: 0; }
+  #toc.toc2 { width: 20em; }
+  #toc.toc2 #toctitle { font-size: 1.375em; }
+  #toc.toc2 > ul { font-size: 0.95em; }
+  #toc.toc2 ul ul { padding-left: 1.25em; }
+  body.toc2.toc-right { padding-left: 0; padding-right: 20em; } }
+#content #toc { border-style: solid; border-width: 1px; border-color: #e6e6e6; margin-bottom: 1.25em; padding: 1.25em; background: white; -webkit-border-radius: 0; border-radius: 0; }
+#content #toc > :first-child { margin-top: 0; }
+#content #toc > :last-child { margin-bottom: 0; }
+
+#footer { max-width: 100%; background-color: none; padding: 1.25em; }
+
+#footer-text { color: black; line-height: 1.44; }
+
+.sect1 { padding-bottom: 0.625em; }
+
+@media only screen and (min-width: 768px) { .sect1 { padding-bottom: 1.25em; } }
+.sect1 + .sect1 { border-top: 0 solid #dddddd; }
+
+#content h1 > a.anchor, h2 > a.anchor, h3 > a.anchor, #toctitle > a.anchor, .sidebarblock > .content > .title > a.anchor, h4 > a.anchor, h5 > a.anchor, h6 > a.anchor { position: absolute; z-index: 1001; width: 1.5ex; margin-left: -1.5ex; display: block; text-decoration: none !important; visibility: hidden; text-align: center; font-weight: normal; }
+#content h1 > a.anchor:before, h2 > a.anchor:before, h3 > a.anchor:before, #toctitle > a.anchor:before, .sidebarblock > .content > .title > a.anchor:before, h4 > a.anchor:before, h5 > a.anchor:before, h6 > a.anchor:before { content: "\00A7"; font-size: 0.85em; display: block; padding-top: 0.1em; }
+#content h1:hover > a.anchor, #content h1 > a.anchor:hover, h2:hover > a.anchor, h2 > a.anchor:hover, h3:hover > a.anchor, #toctitle:hover > a.anchor, .sidebarblock > .content > .title:hover > a.anchor, h3 > a.anchor:hover, #toctitle > a.anchor:hover, .sidebarblock > .content > .title > a.anchor:hover, h4:hover > a.anchor, h4 > a.anchor:hover, h5:hover > a.anchor, h5 > a.anchor:hover, h6:hover > a.anchor, h6 > a.anchor:hover { visibility: visible; }
+#content h1 > a.link, h2 > a.link, h3 > a.link, #toctitle > a.link, .sidebarblock > .content > .title > a.link, h4 > a.link, h5 > a.link, h6 > a.link { color: #7b2d00; text-decoration: none; }
+#content h1 > a.link:hover, h2 > a.link:hover, h3 > a.link:hover, #toctitle > a.link:hover, .sidebarblock > .content > .title > a.link:hover, h4 > a.link:hover, h5 > a.link:hover, h6 > a.link:hover { color: #622400; }
+
+.audioblock, .imageblock, .literalblock, .listingblock, .stemblock, .videoblock { margin-bottom: 1.25em; }
+
+.admonitionblock td.content > .title, .audioblock > .title, .exampleblock > .title, .imageblock > .title, .listingblock > .title, .literalblock > .title, .stemblock > .title, .openblock > .title, .paragraph > .title, .quoteblock > .title, table.tableblock > .title, .verseblock > .title, .videoblock > .title, .dlist > .title, .olist > .title, .ulist > .title, .qlist > .title, .hdlist > .title { text-rendering: optimizeLegibility; text-align: left; }
+
+table.tableblock > caption.title { white-space: nowrap; overflow: visible; max-width: 0; }
+
+.paragraph.lead > p, #preamble > .sectionbody > .paragraph:first-of-type p { color: #7b2d00; }
+
+table.tableblock #preamble > .sectionbody > .paragraph:first-of-type p { font-size: inherit; }
+
+.admonitionblock > table { border-collapse: separate; border: 0; background: none; width: 100%; }
+.admonitionblock > table td.icon { text-align: center; width: 80px; }
+.admonitionblock > table td.icon img { max-width: none; }
+.admonitionblock > table td.icon .title { font-weight: bold; font-family: Arial, sans-serif; text-transform: uppercase; }
+.admonitionblock > table td.content { padding-left: 1.125em; padding-right: 1.25em; border-left: 1px solid #dddddd; color: #e15200; }
+.admonitionblock > table td.content > :last-child > :last-child { margin-bottom: 0; }
+
+.exampleblock > .content { border-style: solid; border-width: 1px; border-color: #e6e6e6; margin-bottom: 1.25em; padding: 1.25em; background: white; -webkit-border-radius: 0; border-radius: 0; }
+.exampleblock > .content > :first-child { margin-top: 0; }
+.exampleblock > .content > :last-child { margin-bottom: 0; }
+
+.sidebarblock { border-style: solid; border-width: 1px; border-color: #e6e6e6; margin-bottom: 1.25em; padding: 1.25em; background: white; -webkit-border-radius: 0; border-radius: 0; }
+.sidebarblock > :first-child { margin-top: 0; }
+.sidebarblock > :last-child { margin-bottom: 0; }
+.sidebarblock > .content > .title { color: #003b6b; margin-top: 0; }
+
+.exampleblock > .content > :last-child > :last-child, .exampleblock > .content .olist > ol > li:last-child > :last-child, .exampleblock > .content .ulist > ul > li:last-child > :last-child, .exampleblock > .content .qlist > ol > li:last-child > :last-child, .sidebarblock > .content > :last-child > :last-child, .sidebarblock > .content .olist > ol > li:last-child > :last-child, .sidebarblock > .content .ulist > ul > li:last-child > :last-child, .sidebarblock > .content .qlist > ol > li:last-child > :last-child { margin-bottom: 0; }
+
+.literalblock pre, .listingblock pre:not(.highlight), .listingblock pre[class="highlight"], .listingblock pre[class^="highlight "], .listingblock pre.CodeRay, .listingblock pre.prettyprint { background: #eeeeee; }
+.sidebarblock .literalblock pre, .sidebarblock .listingblock pre:not(.highlight), .sidebarblock .listingblock pre[class="highlight"], .sidebarblock .listingblock pre[class^="highlight "], .sidebarblock .listingblock pre.CodeRay, .sidebarblock .listingblock pre.prettyprint { background: #f2f1f1; }
+
+.literalblock pre, .literalblock pre[class], .listingblock pre, .listingblock pre[class] { border: 1px dashed #666666; -webkit-border-radius: 0; border-radius: 0; word-wrap: break-word; padding: 1.25em 1.5625em 1.125em 1.5625em; font-size: 0.8125em; }
+.literalblock pre.nowrap, .literalblock pre[class].nowrap, .listingblock pre.nowrap, .listingblock pre[class].nowrap { overflow-x: auto; white-space: pre; word-wrap: normal; }
+@media only screen and (min-width: 768px) { .literalblock pre, .literalblock pre[class], .listingblock pre, .listingblock pre[class] { font-size: 0.90625em; } }
+@media only screen and (min-width: 1280px) { .literalblock pre, .literalblock pre[class], .listingblock pre, .listingblock pre[class] { font-size: 1em; } }
+
+.literalblock.output pre { color: #eeeeee; background-color: black; }
+
+.listingblock pre.highlightjs { padding: 0; }
+.listingblock pre.highlightjs > code { padding: 1.25em 1.5625em 1.125em 1.5625em; -webkit-border-radius: 0; border-radius: 0; }
+
+.listingblock > .content { position: relative; }
+
+.listingblock code[data-lang]:before { display: none; content: attr(data-lang); position: absolute; font-size: 0.75em; top: 0.425rem; right: 0.5rem; line-height: 1; text-transform: uppercase; color: #999; }
+
+.listingblock:hover code[data-lang]:before { display: block; }
+
+.listingblock.terminal pre .command:before { content: attr(data-prompt); padding-right: 0.5em; color: #999; }
+
+.listingblock.terminal pre .command:not([data-prompt]):before { content: "$"; }
+
+table.pyhltable { border-collapse: separate; border: 0; margin-bottom: 0; background: none; }
+
+table.pyhltable td { vertical-align: top; padding-top: 0; padding-bottom: 0; }
+
+table.pyhltable td.code { padding-left: .75em; padding-right: 0; }
+
+pre.pygments .lineno, table.pyhltable td:not(.code) { color: #999; padding-left: 0; padding-right: .5em; border-right: 1px solid #dddddd; }
+
+pre.pygments .lineno { display: inline-block; margin-right: .25em; }
+
+table.pyhltable .linenodiv { background: none !important; padding-right: 0 !important; }
+
+.quoteblock { margin: 0 1em 0.75em 1.5em; display: table; }
+.quoteblock > .title { margin-left: -1.5em; margin-bottom: 0.75em; }
+.quoteblock blockquote, .quoteblock blockquote p { color: #333333; font-size: 1.15rem; line-height: 1.75; word-spacing: 0.1em; letter-spacing: 0; font-style: italic; text-align: justify; }
+.quoteblock blockquote { margin: 0; padding: 0; border: 0; }
+.quoteblock blockquote:before { content: "\201c"; float: left; font-size: 2.75em; font-weight: bold; line-height: 0.6em; margin-left: -0.6em; color: #003b6b; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); }
+.quoteblock blockquote > .paragraph:last-child p { margin-bottom: 0; }
+.quoteblock .attribution { margin-top: 0.5em; margin-right: 0.5ex; text-align: right; }
+.quoteblock .quoteblock { margin-left: 0; margin-right: 0; padding: 0.5em 0; border-left: 3px solid #e15200; }
+.quoteblock .quoteblock blockquote { padding: 0 0 0 0.75em; }
+.quoteblock .quoteblock blockquote:before { display: none; }
+
+.verseblock { margin: 0 1em 0.75em 1em; }
+.verseblock pre { font-family: "Open Sans", "DejaVu Sans", sans; font-size: 1.15rem; color: #333333; font-weight: 300; text-rendering: optimizeLegibility; }
+.verseblock pre strong { font-weight: 400; }
+.verseblock .attribution { margin-top: 1.25rem; margin-left: 0.5ex; }
+
+.quoteblock .attribution, .verseblock .attribution { font-size: 0.8125em; line-height: 1.45; font-style: italic; }
+.quoteblock .attribution br, .verseblock .attribution br { display: none; }
+.quoteblock .attribution cite, .verseblock .attribution cite { display: block; letter-spacing: -0.05em; color: #e15200; }
+
+.quoteblock.abstract { margin: 0 0 0.75em 0; display: block; }
+.quoteblock.abstract blockquote, .quoteblock.abstract blockquote p { text-align: left; word-spacing: 0; }
+.quoteblock.abstract blockquote:before, .quoteblock.abstract blockquote p:first-of-type:before { display: none; }
+
+table.tableblock { max-width: 100%; border-collapse: separate; }
+table.tableblock td > .paragraph:last-child p > p:last-child, table.tableblock th > p:last-child, table.tableblock td > p:last-child { margin-bottom: 0; }
+
+table.spread { width: 100%; }
+
+table.tableblock, th.tableblock, td.tableblock { border: 0 solid #d8d8ce; }
+
+table.grid-all th.tableblock, table.grid-all td.tableblock { border-width: 0 1px 1px 0; }
+
+table.grid-all tfoot > tr > th.tableblock, table.grid-all tfoot > tr > td.tableblock { border-width: 1px 1px 0 0; }
+
+table.grid-cols th.tableblock, table.grid-cols td.tableblock { border-width: 0 1px 0 0; }
+
+table.grid-all * > tr > .tableblock:last-child, table.grid-cols * > tr > .tableblock:last-child { border-right-width: 0; }
+
+table.grid-rows th.tableblock, table.grid-rows td.tableblock { border-width: 0 0 1px 0; }
+
+table.grid-all tbody > tr:last-child > th.tableblock, table.grid-all tbody > tr:last-child > td.tableblock, table.grid-all thead:last-child > tr > th.tableblock, table.grid-rows tbody > tr:last-child > th.tableblock, table.grid-rows tbody > tr:last-child > td.tableblock, table.grid-rows thead:last-child > tr > th.tableblock { border-bottom-width: 0; }
+
+table.grid-rows tfoot > tr > th.tableblock, table.grid-rows tfoot > tr > td.tableblock { border-width: 1px 0 0 0; }
+
+table.frame-all { border-width: 1px; }
+
+table.frame-sides { border-width: 0 1px; }
+
+table.frame-topbot { border-width: 1px 0; }
+
+th.halign-left, td.halign-left { text-align: left; }
+
+th.halign-right, td.halign-right { text-align: right; }
+
+th.halign-center, td.halign-center { text-align: center; }
+
+th.valign-top, td.valign-top { vertical-align: top; }
+
+th.valign-bottom, td.valign-bottom { vertical-align: bottom; }
+
+th.valign-middle, td.valign-middle { vertical-align: middle; }
+
+table thead th, table tfoot th { font-weight: bold; }
+
+tbody tr th { display: table-cell; line-height: 1.4; background: -webkit-linear-gradient(top, #add386, #90b66a); }
+
+tbody tr th, tbody tr th p, tfoot tr th, tfoot tr th p { color: white; font-weight: bold; }
+
+p.tableblock > code:only-child { background: none; padding: 0; }
+
+p.tableblock { font-size: 1em; }
+
+td > div.verse { white-space: pre; }
+
+ol { margin-left: 1.75em; }
+
+ul li ol { margin-left: 1.5em; }
+
+dl dd { margin-left: 1.125em; }
+
+dl dd:last-child, dl dd:last-child > :last-child { margin-bottom: 0; }
+
+ol > li p, ul > li p, ul dd, ol dd, .olist .olist, .ulist .ulist, .ulist .olist, .olist .ulist { margin-bottom: 0.375em; }
+
+ul.unstyled, ol.unnumbered, ul.checklist, ul.none { list-style-type: none; }
+
+ul.unstyled, ol.unnumbered, ul.checklist { margin-left: 0.625em; }
+
+ul.checklist li > p:first-child > .fa-square-o:first-child, ul.checklist li > p:first-child > .fa-check-square-o:first-child { width: 1em; font-size: 0.85em; }
+
+ul.checklist li > p:first-child > input[type="checkbox"]:first-child { width: 1em; position: relative; top: 1px; }
+
+ul.inline { margin: 0 auto 0.375em auto; margin-left: -1.375em; margin-right: 0; padding: 0; list-style: none; overflow: hidden; }
+ul.inline > li { list-style: none; float: left; margin-left: 1.375em; display: block; }
+ul.inline > li > * { display: block; }
+
+.unstyled dl dt { font-weight: normal; font-style: normal; }
+
+ol.arabic { list-style-type: decimal; }
+
+ol.decimal { list-style-type: decimal-leading-zero; }
+
+ol.loweralpha { list-style-type: lower-alpha; }
+
+ol.upperalpha { list-style-type: upper-alpha; }
+
+ol.lowerroman { list-style-type: lower-roman; }
+
+ol.upperroman { list-style-type: upper-roman; }
+
+ol.lowergreek { list-style-type: lower-greek; }
+
+.hdlist > table, .colist > table { border: 0; background: none; }
+.hdlist > table > tbody > tr, .colist > table > tbody > tr { background: none; }
+
+td.hdlist1 { padding-right: .75em; font-weight: bold; }
+
+td.hdlist1, td.hdlist2 { vertical-align: top; }
+
+.literalblock + .colist, .listingblock + .colist { margin-top: -0.5em; }
+
+.colist > table tr > td:first-of-type { padding: 0 0.75em; line-height: 1; }
+.colist > table tr > td:last-of-type { padding: 0.25em 0; }
+
+.thumb, .th { line-height: 0; display: inline-block; border: solid 4px white; -webkit-box-shadow: 0 0 0 1px #dddddd; box-shadow: 0 0 0 1px #dddddd; }
+
+.imageblock.left, .imageblock[style*="float: left"] { margin: 0.25em 0.625em 1.25em 0; }
+.imageblock.right, .imageblock[style*="float: right"] { margin: 0.25em 0 1.25em 0.625em; }
+.imageblock > .title { margin-bottom: 0; }
+.imageblock.thumb, .imageblock.th { border-width: 6px; }
+.imageblock.thumb > .title, .imageblock.th > .title { padding: 0 0.125em; }
+
+.image.left, .image.right { margin-top: 0.25em; margin-bottom: 0.25em; display: inline-block; line-height: 0; }
+.image.left { margin-right: 0.625em; }
+.image.right { margin-left: 0.625em; }
+
+a.image { text-decoration: none; }
+
+span.footnote, span.footnoteref { vertical-align: super; font-size: 0.875em; }
+span.footnote a, span.footnoteref a { text-decoration: none; }
+span.footnote a:active, span.footnoteref a:active { text-decoration: underline; }
+
+#footnotes { padding-top: 0.75em; padding-bottom: 0.75em; margin-bottom: 0.625em; }
+#footnotes hr { width: 20%; min-width: 6.25em; margin: -.25em 0 .75em 0; border-width: 1px 0 0 0; }
+#footnotes .footnote { padding: 0 0.375em; line-height: 1.3; font-size: 0.875em; margin-left: 1.2em; text-indent: -1.2em; margin-bottom: .2em; }
+#footnotes .footnote a:first-of-type { font-weight: bold; text-decoration: none; }
+#footnotes .footnote:last-of-type { margin-bottom: 0; }
+
+#content #footnotes { margin-top: -0.625em; margin-bottom: 0; padding: 0.75em 0; }
+
+.gist .file-data > table { border: 0; background: #fff; width: 100%; margin-bottom: 0; }
+.gist .file-data > table td.line-data { width: 99%; }
+
+div.unbreakable { page-break-inside: avoid; }
+
+.big { font-size: larger; }
+
+.small { font-size: smaller; }
+
+.underline { text-decoration: underline; }
+
+.overline { text-decoration: overline; }
+
+.line-through { text-decoration: line-through; }
+
+.aqua { color: #00bfbf; }
+
+.aqua-background { background-color: #00fafa; }
+
+.black { color: black; }
+
+.black-background { background-color: black; }
+
+.blue { color: #0000bf; }
+
+.blue-background { background-color: #0000fa; }
+
+.fuchsia { color: #bf00bf; }
+
+.fuchsia-background { background-color: #fa00fa; }
+
+.gray { color: #606060; }
+
+.gray-background { background-color: #7d7d7d; }
+
+.green { color: #006000; }
+
+.green-background { background-color: #007d00; }
+
+.lime { color: #00bf00; }
+
+.lime-background { background-color: #00fa00; }
+
+.maroon { color: #600000; }
+
+.maroon-background { background-color: #7d0000; }
+
+.navy { color: #000060; }
+
+.navy-background { background-color: #00007d; }
+
+.olive { color: #606000; }
+
+.olive-background { background-color: #7d7d00; }
+
+.purple { color: #600060; }
+
+.purple-background { background-color: #7d007d; }
+
+.red { color: #bf0000; }
+
+.red-background { background-color: #fa0000; }
+
+.silver { color: #909090; }
+
+.silver-background { background-color: #bcbcbc; }
+
+.teal { color: #006060; }
+
+.teal-background { background-color: #007d7d; }
+
+.white { color: #bfbfbf; }
+
+.white-background { background-color: #fafafa; }
+
+.yellow { color: #bfbf00; }
+
+.yellow-background { background-color: #fafa00; }
+
+span.icon > .fa { cursor: default; }
+
+.admonitionblock td.icon [class^="fa icon-"] { font-size: 2.5em; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); cursor: default; }
+.admonitionblock td.icon .icon-note:before { content: "\f05a"; color: #004176; }
+.admonitionblock td.icon .icon-tip:before { content: "\f0eb"; text-shadow: 1px 1px 2px rgba(155, 155, 0, 0.8); color: #111; }
+.admonitionblock td.icon .icon-warning:before { content: "\f071"; color: #bf6900; }
+.admonitionblock td.icon .icon-caution:before { content: "\f06d"; color: #bf3400; }
+.admonitionblock td.icon .icon-important:before { content: "\f06a"; color: #bf0000; }
+
+.conum[data-value] { display: inline-block; color: #fff !important; background-color: black; -webkit-border-radius: 100px; border-radius: 100px; text-align: center; font-size: 0.75em; width: 1.67em; height: 1.67em; line-height: 1.67em; font-family: "Open Sans", "DejaVu Sans", sans-serif; font-style: normal; font-weight: bold; }
+.conum[data-value] * { color: #fff !important; }
+.conum[data-value] + b { display: none; }
+.conum[data-value]:after { content: attr(data-value); }
+pre .conum[data-value] { position: relative; top: -0.125em; }
+
+b.conum * { color: inherit !important; }
+
+.conum:not([data-value]):empty { display: none; }
+
+h1, h2, h3, #toctitle, .sidebarblock > .content > .title, h4, h5, h6 { border-bottom: 1px solid #dddddd; }
+
+.sect1 { padding-bottom: 0; }
+
+#toctitle { color: #00406F; font-weight: normal; margin-top: 1.5em; }
+
+.sidebarblock { border-color: #aaa; }
+
+code { -webkit-border-radius: 4px; border-radius: 4px; }
+
+p.tableblock.header { color: #6d6e71; }
+
+.literalblock pre, .listingblock pre { background: #eeeeee; }
+
+</style>
+<style>
+.listingblock .pygments .hll { background-color: #ffffcc }
+.listingblock .pygments, .listingblock .pygments code { background: #ffffff; }
+.listingblock .pygments .tok-c { color: #aaaaaa; font-style: italic } /* Comment */
+.listingblock .pygments .tok-err { color: #FF0000; background-color: #FFAAAA } /* Error */
+.listingblock .pygments .tok-k { color: #0000aa } /* Keyword */
+.listingblock .pygments .tok-ch { color: #aaaaaa; font-style: italic } /* Comment.Hashbang */
+.listingblock .pygments .tok-cm { color: #aaaaaa; font-style: italic } /* Comment.Multiline */
+.listingblock .pygments .tok-cp { color: #4c8317 } /* Comment.Preproc */
+.listingblock .pygments .tok-cpf { color: #aaaaaa; font-style: italic } /* Comment.PreprocFile */
+.listingblock .pygments .tok-c1 { color: #aaaaaa; font-style: italic } /* Comment.Single */
+.listingblock .pygments .tok-cs { color: #0000aa; font-style: italic } /* Comment.Special */
+.listingblock .pygments .tok-gd { color: #aa0000 } /* Generic.Deleted */
+.listingblock .pygments .tok-ge { font-style: italic } /* Generic.Emph */
+.listingblock .pygments .tok-gr { color: #aa0000 } /* Generic.Error */
+.listingblock .pygments .tok-gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.listingblock .pygments .tok-gi { color: #00aa00 } /* Generic.Inserted */
+.listingblock .pygments .tok-go { color: #888888 } /* Generic.Output */
+.listingblock .pygments .tok-gp { color: #555555 } /* Generic.Prompt */
+.listingblock .pygments .tok-gs { font-weight: bold } /* Generic.Strong */
+.listingblock .pygments .tok-gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.listingblock .pygments .tok-gt { color: #aa0000 } /* Generic.Traceback */
+.listingblock .pygments .tok-kc { color: #0000aa } /* Keyword.Constant */
+.listingblock .pygments .tok-kd { color: #0000aa } /* Keyword.Declaration */
+.listingblock .pygments .tok-kn { color: #0000aa } /* Keyword.Namespace */
+.listingblock .pygments .tok-kp { color: #0000aa } /* Keyword.Pseudo */
+.listingblock .pygments .tok-kr { color: #0000aa } /* Keyword.Reserved */
+.listingblock .pygments .tok-kt { color: #00aaaa } /* Keyword.Type */
+.listingblock .pygments .tok-m { color: #009999 } /* Literal.Number */
+.listingblock .pygments .tok-s { color: #aa5500 } /* Literal.String */
+.listingblock .pygments .tok-na { color: #1e90ff } /* Name.Attribute */
+.listingblock .pygments .tok-nb { color: #00aaaa } /* Name.Builtin */
+.listingblock .pygments .tok-nc { color: #00aa00; text-decoration: underline } /* Name.Class */
+.listingblock .pygments .tok-no { color: #aa0000 } /* Name.Constant */
+.listingblock .pygments .tok-nd { color: #888888 } /* Name.Decorator */
+.listingblock .pygments .tok-ni { color: #880000; font-weight: bold } /* Name.Entity */
+.listingblock .pygments .tok-nf { color: #00aa00 } /* Name.Function */
+.listingblock .pygments .tok-nn { color: #00aaaa; text-decoration: underline } /* Name.Namespace */
+.listingblock .pygments .tok-nt { color: #1e90ff; font-weight: bold } /* Name.Tag */
+.listingblock .pygments .tok-nv { color: #aa0000 } /* Name.Variable */
+.listingblock .pygments .tok-ow { color: #0000aa } /* Operator.Word */
+.listingblock .pygments .tok-w { color: #bbbbbb } /* Text.Whitespace */
+.listingblock .pygments .tok-mb { color: #009999 } /* Literal.Number.Bin */
+.listingblock .pygments .tok-mf { color: #009999 } /* Literal.Number.Float */
+.listingblock .pygments .tok-mh { color: #009999 } /* Literal.Number.Hex */
+.listingblock .pygments .tok-mi { color: #009999 } /* Literal.Number.Integer */
+.listingblock .pygments .tok-mo { color: #009999 } /* Literal.Number.Oct */
+.listingblock .pygments .tok-sa { color: #aa5500 } /* Literal.String.Affix */
+.listingblock .pygments .tok-sb { color: #aa5500 } /* Literal.String.Backtick */
+.listingblock .pygments .tok-sc { color: #aa5500 } /* Literal.String.Char */
+.listingblock .pygments .tok-dl { color: #aa5500 } /* Literal.String.Delimiter */
+.listingblock .pygments .tok-sd { color: #aa5500 } /* Literal.String.Doc */
+.listingblock .pygments .tok-s2 { color: #aa5500 } /* Literal.String.Double */
+.listingblock .pygments .tok-se { color: #aa5500 } /* Literal.String.Escape */
+.listingblock .pygments .tok-sh { color: #aa5500 } /* Literal.String.Heredoc */
+.listingblock .pygments .tok-si { color: #aa5500 } /* Literal.String.Interpol */
+.listingblock .pygments .tok-sx { color: #aa5500 } /* Literal.String.Other */
+.listingblock .pygments .tok-sr { color: #009999 } /* Literal.String.Regex */
+.listingblock .pygments .tok-s1 { color: #aa5500 } /* Literal.String.Single */
+.listingblock .pygments .tok-ss { color: #0000aa } /* Literal.String.Symbol */
+.listingblock .pygments .tok-bp { color: #00aaaa } /* Name.Builtin.Pseudo */
+.listingblock .pygments .tok-fm { color: #00aa00 } /* Name.Function.Magic */
+.listingblock .pygments .tok-vc { color: #aa0000 } /* Name.Variable.Class */
+.listingblock .pygments .tok-vg { color: #aa0000 } /* Name.Variable.Global */
+.listingblock .pygments .tok-vi { color: #aa0000 } /* Name.Variable.Instance */
+.listingblock .pygments .tok-vm { color: #aa0000 } /* Name.Variable.Magic */
+.listingblock .pygments .tok-il { color: #009999 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<h1>MoonSC Reference Manual</h1>
+<div class="details">
+<span id="author" class="author">Stefano Trettel</span><br>
+<span id="revnumber">version 0.1,</span>
+<span id="revdate">2019-04-04</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_preface">Preface</a>
+<ul class="sectlevel2">
+<li><a href="#_getting_and_installing">Getting and installing</a></li>
+<li><a href="#_module_organization">Module organization</a></li>
+<li><a href="#_examples">Examples</a></li>
+<li><a href="#_license">License</a></li>
+<li><a href="#see-also">See also</a></li>
+</ul>
+</li>
+<li><a href="#_overview">Overview</a></li>
+<li><a href="#statecharts">Statecharts</a></li>
+<li><a href="#_sessions">Sessions</a></li>
+<li><a href="#events">Events</a></li>
+<li><a href="#luadatamodel">Data Model</a></li>
+<li><a href="#_callbacks">Callbacks</a></li>
+<li><a href="#_additional_utilities">Additional utilities</a></li>
+<li><a href="#system_variables">System variables</a></li>
+<li><a href="#elements">Elements</a></li>
+<li><a href="#_structs">Structs</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<a class="image" href="http://www.lua.org"><img src="powered-by-lua.gif" alt="Lua logo"></a>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_preface">Preface</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This is the reference manual
+of <strong>MoonSC</strong>, which is a <a href="http://www.lua.org"><strong>Lua</strong></a> execution environment for
+<a href="https://en.wikipedia.org/wiki/State_diagram#Harel_statechart"><strong>Harel statecharts</strong></a>,
+following the <a href="https://www.w3.org/TR/scxml/"><strong>State&nbsp;Chart&nbsp;XML&nbsp;(SCXML)</strong></a> recommendation.
+<sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnote_1" title="View footnote.">1</a>]</sup></p>
+</div>
+<div class="paragraph">
+<p>It is assumed that the reader is familiar with both SCXML
+and the Lua programming language.</p>
+</div>
+<div class="paragraph">
+<p>For convenience of reference, this document contains external (deep) links to the
+<a href="http://www.lua.org/manual/5.3/manual.html">Lua Reference Manual</a> and to the
+<a href="https://www.w3.org/TR/scxml/">SCXML Recommendation</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="_getting_and_installing">Getting and installing</h3>
+<div class="paragraph">
+<p>For installation intructions, refer to the README file in the
+<a href="https://github.com/stetre/moonsc"><strong>MoonSC official repository</strong></a>
+on GitHub.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_module_organization">Module organization</h3>
+<div class="paragraph">
+<p>The MoonSC module is loaded using Lua&#8217;s
+<a href="http://www.lua.org/manual/5.3/manual.html#pdf-require">require</a>() and
+returns a table containing the functions it provides
+(as usual with Lua modules). This manual assumes that such
+table is named <strong>moonsc</strong>, i.e. that it is loaded with:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="lua"><span></span> <span class="tok-n">moonsc</span> <span class="tok-o">=</span> <span class="tok-nb">require</span><span class="tok-p">(</span><span class="tok-s2">&quot;moonsc&quot;</span><span class="tok-p">)</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>but nothing forbids the use of a different name.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_examples">Examples</h3>
+<div class="paragraph">
+<p>Complete examples can be found in the <strong>examples/</strong> directory of the release package.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_license">License</h3>
+<div class="paragraph">
+<p>MoonSC is released under the <strong>MIT/X11 license</strong> (same as
+<a href="http://www.lua.org/license.html">Lua</a>, and with the same only requirement to give proper
+credits to the original author).
+The copyright notice is in the LICENSE file in the base directory
+of the <a href="https://github.com/stetre/moonsc">official repository</a> on GitHub.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="see-also">See also</h3>
+<div class="paragraph">
+<p>MoonSC is part of <a href="https://github.com/stetre/moonlibs">MoonLibs</a>, a collection of
+Lua libraries for graphics and audio programming.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_overview">Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A MoonSC <strong>application</strong> executes one or more concurrent SCXML sessions each defined
+by a SCXML statechart, as shown in the sketched example below:</p>
+</div>
+<div class="listingblock">
+<div class="title">MoonSC application (sketch)</div>
+<div class="content">
+<pre class="pygments highlight"><code data-lang="lua"><span></span> <span class="tok-kd">local</span> <span class="tok-n">moonsc</span> <span class="tok-o">=</span> <span class="tok-nb">require</span><span class="tok-p">(</span><span class="tok-s2">&quot;moonsc&quot;</span><span class="tok-p">)</span>
+ <span class="tok-c1">-- ...</span>
+ <span class="tok-c1">-- Optionally set callbacks to control the execution:</span>
+ <span class="tok-n">moonsc</span><span class="tok-p">.</span><span class="tok-n">set_log_callback</span><span class="tok-p">(</span><span class="tok-n">mylogfunc</span><span class="tok-p">)</span>
+ <span class="tok-c1">-- ...</span>
+ <span class="tok-c1">-- Create and start any initial session:</span>
+ <span class="tok-n">moonsc</span><span class="tok-p">.</span><span class="tok-n">create</span><span class="tok-p">(</span><span class="tok-s1">&#39;mysessionid&#39;</span><span class="tok-p">,</span> <span class="tok-n">mystatechart</span><span class="tok-p">)</span>
+ <span class="tok-n">moonsc</span><span class="tok-p">.</span><span class="tok-n">start</span><span class="tok-p">(</span><span class="tok-s1">&#39;mysessionid&#39;</span><span class="tok-p">)</span>
+ <span class="tok-c1">-- ...</span>
+ <span class="tok-c1">-- Enter the main loop:</span>
+ <span class="tok-kr">while</span> <span class="tok-n">moonsc</span><span class="tok-p">.</span><span class="tok-n">trigger</span><span class="tok-p">()</span> <span class="tok-kr">do</span>
+   <span class="tok-c1">-- ...</span>
+ <span class="tok-kr">end</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The application code first sets a few <a href="#callbacks"><strong>callbacks</strong></a> to control some aspects
+of the execution (e.g. logs, event routing, invocations), then it creates and starts
+any initial session, and finally it enters its <strong>main loop</strong>, from which at each iteration
+it is expected to call the <a href="#trigger">trigger</a>(&nbsp;)
+function that executes any enabled transitions in the sessions that are running.</p>
+</div>
+<div class="paragraph">
+<p>Any <strong>session</strong> running in the application is created by the application itself using the
+<a href="#create">create</a>(&nbsp;) function, passing it an unique
+session identifier, the statechart defining the session&#8217;s behavior, and
+possibly a set of parameters in case the session is created because of the
+execution of an &lt;invoke&gt; element in an already existing session (the 'parent session').</p>
+</div>
+<div class="paragraph">
+<p>When created, a session is by default still not running. It can be started either by
+passing <em>start=true</em> when creating it, or later by calling the <a href="#start">start</a>(&nbsp;) function.</p>
+</div>
+<div class="paragraph">
+<p>The <strong>statechart</strong> is passed in form of a Lua table equivalent to an SCXML document,
+as described in the <a href="#statecharts">'Statecharts'</a> section. A statechart in this
+form may be either written directly in Lua or produced as a result of parsing an
+actual SCXML document
+<sup class="footnote">[<a id="_footnoteref_2" class="footnote" href="#_footnote_2" title="View footnote.">2</a>]</sup>.
+The same statechart can be used to execute multiple sessions, i.e. one or more independent
+instances of the same state machine, either concurrently running or otherwise.</p>
+</div>
+<div class="paragraph">
+<p>Each session has a
+<a href="http://www.lua.org/manual/5.3/manual.html#2.2">dedicated Lua environment (_ENV)</a>,
+that represents its <strong>Data Model</strong> and provides it with encapsulation.
+The <a href="#luadatamodel">'lua' Data Model</a> is the only data model supported by MoonSC.
+Any chunk of Lua code contained in the statechart&#8217;s elements (cond, expr, &lt;script&gt;,
+etc) is executed in the session&#8217;s dedicated environment.
+System variables as per the SCXML recommendation and any &lt;data&gt; variables are also
+defined there as global variables.</p>
+</div>
+<div class="paragraph">
+<p>The application and sessions <strong>communicate</strong> with each other by standard means,
+i.e. via SCXML events as described in the <a href="#events">'Events'</a> section.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="statecharts">Statecharts</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An SCXML <a href="#elements"><strong>element</strong></a> is represented in MoonSC by a Lua table having the
+format shown below. A <strong>statechart</strong> is just the Lua-table representation of an element
+of the <strong>&lt;scxml&gt;</strong> type (i.e. having <em>element.tag="scxml"</em>).</p>
+</div>
+<div class="listingblock">
+<div class="title">Lua-table representation of a SCXML element</div>
+<div class="content">
+<pre class="pygments highlight"><code data-lang="lua"><span></span> <span class="tok-n">element</span> <span class="tok-o">=</span> <span class="tok-p">{}</span>
+ <span class="tok-n">element</span><span class="tok-p">.</span><span class="tok-n">tag</span>  <span class="tok-c1">-- the SCXML tag (a string, e.g. _&#39;scxml&#39;_, _&#39;state&#39;_, etc.)</span>
+ <span class="tok-n">element</span><span class="tok-p">.</span><span class="tok-n">xxx</span>  <span class="tok-c1">-- the value of the attribute named &#39;xxx&#39; (a string),</span>
+ <span class="tok-n">element</span><span class="tok-p">.</span><span class="tok-n">yyy</span>  <span class="tok-c1">-- the value of the attribute named &#39;yyy&#39; (a string),</span>
+ <span class="tok-c1">-- ...</span>
+ <span class="tok-n">element</span><span class="tok-p">[</span><span class="tok-mi">1</span><span class="tok-p">]</span>   <span class="tok-c1">-- 1-st SCXML child element, in document order (a table),</span>
+ <span class="tok-n">element</span><span class="tok-p">[</span><span class="tok-mi">2</span><span class="tok-p">]</span>   <span class="tok-c1">-- 2-nd SCXML child element, in document order (a table),</span>
+ <span class="tok-c1">-- ...</span>
+ <span class="tok-n">element</span><span class="tok-p">[</span><span class="tok-n">N</span><span class="tok-p">]</span>   <span class="tok-c1">-- N-th SCXML child element, in document order (a table),</span>
+ <span class="tok-n">element</span><span class="tok-p">.</span><span class="tok-n">text</span> <span class="tok-c1">-- text and/or non-SCXML markup content (a string).</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The rules dictated by the SCXML recommendation apply to their Lua-table equivalent as well,
+specifying which attributes an element may have and their admitted values, which types of
+children it may have and how many, and so on, with a few caveats (see <a href="#elements">'Elements'</a>
+for more details).</p>
+</div>
+<div class="paragraph">
+<p>To enhance expressivity, MoonSC provides for each element a <strong>element constructor</strong>, which
+is a function that takes a table as parameter and simply adds to it the element&#8217;s tag field.
+Table constructors can be imported using the following function:</p>
+</div>
+<div id="import_tags" class="ulist">
+<ul>
+<li>
+<p><strong>import_tags</strong>([<em>t</em>])<br>
+<span class="small">Adds the element constructors to the table <em>t</em>, which defaults to the current
+_ENV (this implies that calling this function with no arguments has the effect of
+defining the constructors as global functions in the current environment).
+For each generic SCXML element <strong><em>&lt;tag&gt;</em></strong>, its element constructor is a function
+named <strong><em>_tag</strong>(&nbsp;)</em> with the leading underscore (e.g. <em>_state(&nbsp;)</em> for <em>&lt;state&gt;</em>,
+<em>_parallel(&nbsp;)</em> for <em>&lt;parallel&gt;</em>, and so on).</span></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The examples below shows a simple SCXML statechart and its representation in MoonSC,
+first with the tags added manually, and then using element constructors:</p>
+</div>
+<div class="listingblock">
+<div class="title">A simple SCXML statechart</div>
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml"><span></span> <span class="tok-nt">&lt;scxml</span> <span class="tok-na">version=</span><span class="tok-s">&quot;1.0&quot;</span> <span class="tok-na">name=</span><span class="tok-s">&quot;Hello&quot;</span> <span class="tok-na">initial=</span><span class="tok-s">&quot;s1&quot;</span><span class="tok-nt">&gt;</span>
+   <span class="tok-nt">&lt;state</span> <span class="tok-na">id=</span><span class="tok-s">&quot;s1&quot;</span><span class="tok-nt">&gt;</span>
+     <span class="tok-nt">&lt;transition</span> <span class="tok-na">event=</span><span class="tok-s">&quot;go&quot;</span> <span class="tok-na">target=</span><span class="tok-s">&quot;s2&quot;</span><span class="tok-nt">&gt;</span>
+       <span class="tok-nt">&lt;log</span> <span class="tok-na">expr=</span><span class="tok-s">&quot;&#39;Hello, World!&#39;&quot;</span> <span class="tok-nt">/&gt;</span>
+     <span class="tok-nt">&lt;/transition&gt;</span>
+   <span class="tok-nt">&lt;/state&gt;</span>
+   <span class="tok-nt">&lt;final</span> <span class="tok-na">id=</span><span class="tok-s">&quot;s2&quot;</span><span class="tok-nt">&gt;</span>
+   <span class="tok-nt">&lt;/final&gt;</span>
+ <span class="tok-nt">&lt;/scxml&gt;</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Lua-table representation</div>
+<div class="content">
+<pre class="pygments highlight"><code data-lang="lua"><span></span> <span class="tok-kd">local</span> <span class="tok-n">moonsc</span> <span class="tok-o">=</span> <span class="tok-nb">require</span><span class="tok-p">(</span><span class="tok-s2">&quot;moonsc&quot;</span><span class="tok-p">)</span>
+
+ <span class="tok-kd">local</span> <span class="tok-n">helloworld</span> <span class="tok-o">=</span> <span class="tok-p">{</span>
+    <span class="tok-n">tag</span><span class="tok-o">=</span><span class="tok-s1">&#39;scxml&#39;</span><span class="tok-p">,</span> <span class="tok-n">version</span><span class="tok-o">=</span><span class="tok-s2">&quot;1.0&quot;</span><span class="tok-p">,</span> <span class="tok-n">name</span><span class="tok-o">=</span><span class="tok-s2">&quot;Hello&quot;</span><span class="tok-p">,</span> <span class="tok-n">initial</span><span class="tok-o">=</span><span class="tok-s2">&quot;s1&quot;</span><span class="tok-p">,</span>
+    <span class="tok-p">{</span> <span class="tok-n">tag</span><span class="tok-o">=</span><span class="tok-s1">&#39;state&#39;</span><span class="tok-p">,</span> <span class="tok-n">id</span> <span class="tok-o">=</span> <span class="tok-s2">&quot;s1&quot;</span><span class="tok-p">,</span>
+      <span class="tok-p">{</span> <span class="tok-n">tag</span><span class="tok-o">=</span><span class="tok-s1">&#39;transition&#39;</span><span class="tok-p">,</span> <span class="tok-n">event</span><span class="tok-o">=</span><span class="tok-s2">&quot;go&quot;</span><span class="tok-p">,</span> <span class="tok-n">target</span><span class="tok-o">=</span><span class="tok-s2">&quot;s2&quot;</span><span class="tok-p">,</span>
+         <span class="tok-p">{</span> <span class="tok-n">tag</span><span class="tok-o">=</span><span class="tok-s2">&quot;log&quot;</span><span class="tok-p">,</span> <span class="tok-n">expr</span><span class="tok-o">=</span><span class="tok-s2">&quot;&#39;Hello, World!&#39;&quot;</span> <span class="tok-p">},</span>
+      <span class="tok-p">},</span>
+    <span class="tok-p">},</span>
+    <span class="tok-p">{</span> <span class="tok-n">tag</span><span class="tok-o">=</span><span class="tok-s1">&#39;final&#39;</span><span class="tok-p">,</span> <span class="tok-n">id</span><span class="tok-o">=</span><span class="tok-s2">&quot;s2&quot;</span> <span class="tok-p">},</span>
+ <span class="tok-p">}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Lua-table representation using constructors</div>
+<div class="content">
+<pre class="pygments highlight"><code data-lang="lua"><span></span> <span class="tok-kd">local</span> <span class="tok-n">moonsc</span> <span class="tok-o">=</span> <span class="tok-nb">require</span><span class="tok-p">(</span><span class="tok-s2">&quot;moonsc&quot;</span><span class="tok-p">)</span>
+ <span class="tok-n">moonsc</span><span class="tok-p">.</span><span class="tok-n">import_tags</span><span class="tok-p">()</span> <span class="tok-c1">-- adds the element constructors to this environment</span>
+
+ <span class="tok-kd">local</span> <span class="tok-n">helloworld</span> <span class="tok-o">=</span> <span class="tok-n">_scxml</span><span class="tok-p">{</span> <span class="tok-n">version</span><span class="tok-o">=</span><span class="tok-s2">&quot;1.0&quot;</span><span class="tok-p">,</span> <span class="tok-n">name</span><span class="tok-o">=</span><span class="tok-s2">&quot;Hello&quot;</span><span class="tok-p">,</span> <span class="tok-n">initial</span><span class="tok-o">=</span><span class="tok-s2">&quot;s1&quot;</span><span class="tok-p">,</span>
+    <span class="tok-n">_state</span><span class="tok-p">{</span> <span class="tok-n">id</span><span class="tok-o">=</span><span class="tok-s2">&quot;s1&quot;</span><span class="tok-p">,</span>
+       <span class="tok-n">_transition</span><span class="tok-p">{</span> <span class="tok-n">event</span><span class="tok-o">=</span><span class="tok-s2">&quot;go&quot;</span><span class="tok-p">,</span> <span class="tok-n">target</span><span class="tok-o">=</span><span class="tok-s2">&quot;s2&quot;</span><span class="tok-p">,</span> <span class="tok-n">_log</span><span class="tok-p">{</span> <span class="tok-n">expr</span><span class="tok-o">=</span><span class="tok-s2">&quot;&#39;Hello, World!&#39;&quot;</span> <span class="tok-p">}</span> <span class="tok-p">},</span>
+    <span class="tok-p">},</span>
+   <span class="tok-n">_final</span><span class="tok-p">{</span> <span class="tok-n">id</span><span class="tok-o">=</span><span class="tok-s2">&quot;s2&quot;</span> <span class="tok-p">},</span>
+ <span class="tok-p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that since constructors accept a table as single parameter, the parentheses can be omitted.</p>
+</div>
+<div class="paragraph">
+<p>Also note that the statechart need not be constructed in one single shot, by defining all
+the nested elements in-line. That is, the Lua-table representation allows for <strong>composability</strong>
+and possibly reuse of elements definitions, as shown in the following (equivalent) re-elaboration
+of the previous example:</p>
+</div>
+<div class="listingblock">
+<div class="title">Composability of Lua-table representations</div>
+<div class="content">
+<pre class="pygments highlight"><code data-lang="lua"><span></span> <span class="tok-kd">local</span> <span class="tok-n">moonsc</span> <span class="tok-o">=</span> <span class="tok-nb">require</span><span class="tok-p">(</span><span class="tok-s2">&quot;moonsc&quot;</span><span class="tok-p">)</span>
+ <span class="tok-n">moonsc</span><span class="tok-p">.</span><span class="tok-n">import_tags</span><span class="tok-p">()</span> <span class="tok-c1">-- adds the element constructors to this environment</span>
+
+ <span class="tok-c1">-- This could be reused at different points in the statechart,</span>
+ <span class="tok-c1">-- and also in other statecharts:</span>
+ <span class="tok-kd">local</span> <span class="tok-n">salute</span> <span class="tok-o">=</span> <span class="tok-n">_log</span><span class="tok-p">{</span> <span class="tok-n">expr</span><span class="tok-o">=</span><span class="tok-s2">&quot;&#39;Hello, World!&#39;&quot;</span> <span class="tok-p">}</span>
+ <span class="tok-kd">local</span> <span class="tok-n">s1</span> <span class="tok-o">=</span> <span class="tok-n">_state</span><span class="tok-p">{</span> <span class="tok-n">id</span><span class="tok-o">=</span><span class="tok-s2">&quot;s1&quot;</span><span class="tok-p">,</span> <span class="tok-n">_transition</span><span class="tok-p">{</span> <span class="tok-n">event</span><span class="tok-o">=</span><span class="tok-s2">&quot;go&quot;</span><span class="tok-p">,</span> <span class="tok-n">target</span><span class="tok-o">=</span><span class="tok-s2">&quot;s2&quot;</span><span class="tok-p">,</span> <span class="tok-n">salute</span> <span class="tok-p">}</span> <span class="tok-p">}</span>
+ <span class="tok-kd">local</span> <span class="tok-n">s2</span> <span class="tok-o">=</span> <span class="tok-n">_final</span><span class="tok-p">{</span> <span class="tok-n">id</span><span class="tok-o">=</span><span class="tok-s2">&quot;s2&quot;</span> <span class="tok-p">}</span>
+ <span class="tok-kd">local</span> <span class="tok-n">helloworld</span> <span class="tok-o">=</span> <span class="tok-n">_scxml</span><span class="tok-p">{</span> <span class="tok-n">version</span><span class="tok-o">=</span><span class="tok-s2">&quot;1.0&quot;</span><span class="tok-p">,</span> <span class="tok-n">name</span><span class="tok-o">=</span><span class="tok-s2">&quot;Hello&quot;</span><span class="tok-p">,</span> <span class="tok-n">initial</span><span class="tok-o">=</span><span class="tok-s2">&quot;s1&quot;</span><span class="tok-p">,</span> <span class="tok-n">s1</span><span class="tok-p">,</span> <span class="tok-n">s2</span> <span class="tok-p">}</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sessions">Sessions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An SCXML <strong>session</strong> is an executable instance of an SCXML statechart.</p>
+</div>
+<div class="paragraph">
+<p>A MoonSC application is capable of running multiple concurrent sessions, which it
+creates and starts with the <a href="#create">create</a>(&nbsp;) with the <a href="#start">start</a>(&nbsp;)
+functions. The application may create sessions at any time, on its own initiative, or to
+serve requests from other entities (other sessions, or whatever).</p>
+</div>
+<div class="paragraph">
+<p>When creating a session, the application must assign it a <strong>session identifier (sessionid)</strong>.
+This is a NMTOKEN string that is required to univoquely identify the session within those
+currently being executed by the application itself. The application designer may use whatever
+scheme she likes to assign session identifiers, or just use the
+<a href="#generate_sessionid">generate_sessionid</a>(&nbsp;) function.
+<sup class="footnote">[<a id="_footnoteref_3" class="footnote" href="#_footnote_3" title="View footnote.">3</a>]</sup></p>
+</div>
+<div class="paragraph">
+<p>After it is started, a session evolves as defined by its statechart, transitioning
+between its states in reaction to <a href="#events">events</a> or triggering conditions,
+and executing the actions contained in any enabled transition.
+The application controls the execution of transitions via the <a href="#trigger">trigger</a>(&nbsp;)
+function, which it is expected to call repeatedly in its main loop. Transitions
+are executed only within calls of this function.
+<sup class="footnote">[<a id="_footnoteref_4" class="footnote" href="#_footnote_4" title="View footnote.">4</a>]</sup></p>
+</div>
+<div class="paragraph">
+<p>A session terminates when it reaches a top-level &lt;final&gt; state, or
+when it is cancelled by the application using the <a href="#cancel">cancel</a>(&nbsp;) function,
+e.g. upon a cancellation request from the parent session because it exited the state
+containing the &lt;invoke&gt;. When it terminates, it is deleted from the internal
+database of sessions.</p>
+</div>
+<div class="paragraph">
+<p>The application can track the termination of sessions by setting the
+<a href="#set_exit_callback">'exit callback'</a>, and by setting the
+<a href="#set_error_callback">'error callback'</a> it can also track errors of execution or
+communication.</p>
+</div>
+<div id="create" class="ulist">
+<ul>
+<li>
+<p><strong>create</strong>(<em>sessionid</em>, <a href="#statecharts"><em>statechart</em></a>, <em>start</em>, [<a href="#invokeinfo">invokeinfo</a>])<br>
+<span class="small">Creates a new SCXML session and possibly starts its execution.<br>
+<em>sessionid</em>: the session identifier for this session (a string).<br>
+<em>statechart</em>: the root &lt;scxml&gt; element defining the session&#8217;s behavior,<br>
+<em>start</em>: if <em>true</em>, also starts the execution of the session,<br>
+<em>invokeinfo</em>: &lt;invoke &gt; information, in case this session is requested by another entity.</span></p>
+</li>
+</ul>
+</div>
+<div id="start" class="ulist">
+<ul>
+<li>
+<p><strong>start</strong>(<em>sessionid</em>)<br>
+<span class="small">Starts the execution of the given session. If the session is already running, a call
+of this function has no effects. Note that any event sent to the session while not running
+is still delivered to it, but it is not processed until the session is started.</span></p>
+</li>
+</ul>
+</div>
+<div id="generate_sessionid" class="ulist">
+<ul>
+<li>
+<p><em>sessionid</em> = <strong>generate_sessionid</strong>( )<br>
+<span class="small">Returns a new sessionid that is not currently used in the application.</span></p>
+</li>
+</ul>
+</div>
+<div id="cancel" class="ulist">
+<ul>
+<li>
+<p><strong>cancel</strong>(<em>sessionid</em>)<br>
+<span class="small">Cancels the session, stopping it (if running) and deleting it from the
+internal database. If the session is not running it is deleted immediately, otherwise
+it is sent a special <em>'external'</em> event that causes it to exit without triggering any
+transition (note that this implies that the session is actually cancelled only when
+this special event is processed, after any other event that was already enqueued).</span></p>
+</li>
+</ul>
+</div>
+<div id="trigger" class="ulist">
+<ul>
+<li>
+<p><em>nsession</em> = <strong>trigger</strong>(&nbsp;)<br>
+<span class="small">Executes an iteration of the SCXML algorithm&#8217;s main loop for each session that
+is currently running in the system.
+Statecharts' transitions are executed only within calls of this function, that the application
+is expected to call repeatedly, e.g. at each iteration of its own main loop.<br>
+Returns <em>true</em> if there are still sessions in the system, otherwise returns <em>false</em>.</span></p>
+</li>
+</ul>
+</div>
+<div id="active_states" class="ulist">
+<ul>
+<li>
+<p><em>{stateid}</em> = <strong>active_states</strong>(<em>sessionid</em>)<br>
+<span class="small">Returns the current state configuration for the given session, i.e.
+the list of ids of the currently active states (in document order). The root &lt;scxml&gt;
+is not included in the list, although it is implicitly always active.</span></p>
+</li>
+</ul>
+</div>
+<div id="is_active" class="ulist">
+<ul>
+<li>
+<p><em>boolean</em> = <strong>is_active</strong>(<em>sessionid</em>, <em>stateid</em>)<br>
+<span class="small">Returns <em>true</em> if the state whose id is <em>stateid</em> is currently active in the given
+session, otherwise returns <em>false</em>.</span></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="events">Events</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The application and the running sessions communicate with each other via
+<a href="https://www.w3.org/TR/scxml/#events">SCXML events</a>.</p>
+</div>
+<div class="paragraph">
+<p>Sessions  receive events as part of the standard transition triggering mechanism,
+and, by executing <strong>&lt;send&gt;</strong> and <strong>&lt;raise&gt;</strong> elements they may send events
+to other sessions, to external entities (through the application), or to themselves.</p>
+</div>
+<div class="paragraph">
+<p>The application can <a href="#send">send</a>(&nbsp;) external events to sessions,
+it can <a href="#raise">raise</a>(&nbsp;) internal or platform events in them, and by setting
+the <a href="#set_send_callback">'send callback'</a> it can receive any session-originated
+&lt;send&gt; that MoonSC does not know how (or if) to route.</p>
+</div>
+<div class="paragraph">
+<p>MoonSC by itself directly supports only the
+<a href="https://www.w3.org/TR/scxml/#SCXMLEventProcessor">SCXML Event I/O Processor</a>,
+and is able to route automatically only events exchanged by local sessions using &lt;send&gt;
+elements having 'type'=<em>"scxml"</em>, and the special 'target' attributes prescribed by the SCXML
+Recommendation (<em>'#_internal'</em>, <em>'#_scxml_sessionid'</em>, <em>'#_parent'</em>, and <em>'#_invokeid'</em>).</p>
+</div>
+<div class="paragraph">
+<p>Any &lt;send&gt; issued by a local session having a 'type' different than <em>"scxml"</em> or a 'target'
+that is not a special one (or that is not recognized as targeting a local session),
+causes MoonSC to call the <a href="#set_send_callback">'send callback'</a> and delegate to the application
+the routing of the message.</p>
+</div>
+<div id="send" class="ulist">
+<ul>
+<li>
+<p><strong>send</strong>(<em>sessionid</em>, <a href="#eventinfo">eventinfo</a>)<br>
+<strong>send</strong>(<em>sessionid</em>, <em>name</em>, [<a href="#data"><em>data</em></a>])<br>
+<span class="small">Sends an event to the given session, by inserting it
+in the session&#8217;s external or internal event queue, depending on
+the value of <em>eventinfo.type</em>.
+The second version of this function inserts an <em>'external'</em> event with the given
+<em>name</em> (a string) and optional <em>data</em> in the external event queue.</span></p>
+</li>
+</ul>
+</div>
+<div id="raise" class="ulist">
+<ul>
+<li>
+<p><strong>raise</strong>(<em>sessionid</em>, <a href="#eventinfo">eventinfo</a>)<br>
+<strong>raise</strong>(<em>sessionid</em>, <em>name</em>,  [<a href="#data"><em>data</em></a>])<br>
+<span class="small">Raises an event in the given session, by inserting it in the
+session&#8217;s internal queue.
+The second version of this function inserts a <em>'platform'</em> event with the given
+<em>name</em> (a string) and optional <em>data</em> in the external event queue.</span></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="luadatamodel">Data Model</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>MoonSC supports a
+<a href="https://www.w3.org/TR/scxml/#data-module">Data Model</a> based on the
+<a href="http://www.lua.org">Lua language</a> (version &gt;= 5.3),
+by assigning to each SCXML session a
+<a href="http://www.lua.org/manual/5.3/manual.html#2.2">dedicated Lua environment (_ENV)</a>
+where to define data and execute content. The dedicated _ENV is customizable
+by providing a template via the <a href="#set_env_template">set_env_template</a>(&nbsp;) function.</p>
+</div>
+<div class="paragraph">
+<p>MoonSC assumes that the <em>"lua"</em> value for the 'datamodel' attribute in the &lt;scxml&gt;
+element refers to this Data Model, and assumes this same value as the default if the
+'datamodel' attribute is omitted.</p>
+</div>
+<div class="paragraph">
+<p>The Lua Data Model is described here, loosely following the specification given in
+<a href="https://www.w3.org/TR/scxml/#ecma-profile">appendix B.2</a> of the SCXML Recommendation
+for the ECMAScript Data Model.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>&lt;datamodel&gt;, &lt;data&gt;</strong> -
+For each &lt;data&gt; element in the statechart, MoonSC creates in _ENV a global
+variable whose name is the value of the 'id' attribute of &lt;data&gt;.
+By default, the variable is assigned the <em>nil</em> value.
+If the &lt;data&gt; element has  a 'expr' attribute, the Lua chunk <em>"return "..expr</em>
+is executed in _ENV and the returned value is assigned to the variable.
+Otherwise if the &lt;data&gt; element has a 'src' attribute, or contains an inline
+specification, the <a href="#set_data_callback">'data callback'</a> is called to resolve it and the
+returned value is assigned to the variable.
+The evaluation and assignment take place at the time indicated by the 'binding' attribute
+on the &lt;scxml&gt; element.</p>
+</li>
+<li>
+<p><strong>Scoping</strong> -
+All &lt;data&gt; elements are defined as global variables in the _ENV dedicated to the
+session, and thus are accessible from any state. &lt;data&gt; elements are guaranteed to be
+created in document order only if they are children of the same &lt;datamodel&gt; element,
+otherwise they are not. When <strong>early binding</strong> is selected, all &lt;data&gt; elements are created
+and bound to their values at initialization time. When <strong>late binding</strong> is selected, &lt;data&gt;
+elements are created at initialization time but bound to their values only when the state
+containing them is first entered.</p>
+</li>
+<li>
+<p><strong>Conditional expressions</strong> -
+Conditional expressions are executed as <em>"return "..cond</em> in the _ENV, and their returned
+value is interpreted as a boolean value using Lua standard rules on the matter (<em>false</em> and <em>nil</em>
+are falsy, <em>true</em> and any other value are truthy).</p>
+</li>
+<li>
+<p><strong>In(&nbsp;) predicate</strong> -
+The <em>In(stateid)</em> predicate is predefined as a global function in the dedicated _ENV.
+It returns <em>true</em> if the state having the passed id is active, otherwise it returns <em>false</em>.</p>
+</li>
+<li>
+<p><strong>Location expressions</strong> -
+Any Lua left-hand-side expression is accepted as location expression.</p>
+</li>
+<li>
+<p><strong>Value expressions</strong> -
+Any Lua expression is accepted as value expression.</p>
+</li>
+<li>
+<p><strong>&lt;content&gt;</strong> -
+If a &lt;content&gt; element has a 'expr' attribute, the Lua chunk <em>"return "..expr</em>
+is executed in _ENV and the returned value is used as the content value. Otherwise
+if the &lt;content&gt; element contains inline text,
+the <a href="#set_content_callback">'content callback'</a> is called to resolve it and the returned
+value is used as the content value.
+In both cases the evaluation is done at the time the &lt;content&gt; element is executed.</p>
+</li>
+<li>
+<p><strong>&lt;assign&gt;</strong> -
+When an &lt;assign&gt; element is executed, the 'expr' or inline content are treated
+in the same way as for &lt;data&gt; elements (see point 1), and the obtained value is
+assigned to the global variable (in _ENV) specified by the 'location' attribute.</p>
+</li>
+<li>
+<p><strong>System variables</strong> -
+MoonSC defines a Lua global variable in the session&#8217;s dedicated _ENV for each variable
+defined in <a href="https://www.w3.org/TR/scxml/#SystemVariables">section 5.10</a> of the SCML Recommendation.
+Such variables are to be intended as read-only by the statechart code authors and care should
+be taken not to overwrite them.
+See the <a href="#system_variables">System Variables</a> section for more details.</p>
+</li>
+<li>
+<p><strong>Serialization</strong> -
+The serialization of events to/from other message formats in order to communicate with
+remote entities is a concern of the application and outside the scope of MoonSC.</p>
+</li>
+<li>
+<p><strong>&lt;script&gt;</strong> -
+If a &lt;script&gt; element has a 'src' attribute, this is resolved by calling the
+<a href="#set_script_allback">'script callback'</a> and interpreting the returned value (a string)
+as Lua code. Otherwise if it has textual content, this is interpreted as the Lua code for
+the script. In both cases, the execution of the &lt;script&gt; element causes the
+Lua code to be executed in the sessions&#8217;s _ENV.</p>
+</li>
+<li>
+<p><strong>&lt;foreach&gt;</strong> -
+A &lt;foreach&gt; element is executed in the _ENV iterating with the standard
+Lua <a href="http://www.lua.org/manual/5.3/manual.html#pdf-pairs">pairs</a>(&nbsp;) function,
+over a shallow copy of the value returned by evaluating the 'array' attribute (that
+thus must result in a Lua table).</p>
+</li>
+<li>
+<p><strong>&lt;log&gt;</strong> -
+When a &lt;log&gt; element is executed, its attributes are evaluated and passed to the
+<a href="#set_log_callback">'log callback'</a>, together with the session identifier.
+If the log callback is not set, no action is taken. The 'expr' attribute is evaluated in
+the same way as for the &lt;data&gt; element (see point 1). The <em>nil</em> value is passed to
+the callback for any omitted attribute.</p>
+</li>
+<li>
+<p><strong>time intervals</strong> -
+The 'delay' attribute in &lt;send&gt; elements may be either a string composed
+by a number immediately followed by a 's' (for seconds) or 'ms' (for milliseconds), or simply
+as a number, in which case it is interpreted as seconds.</p>
+</li>
+<li>
+<p><strong>Now(&nbsp;) and Since(&nbsp;)</strong> -
+The <em>Now()</em> and <em>Since()</em> functions are predefined on the dedicated _ENV to give to
+statecharts access to the MoonSC <a href="#now">now</a>(&nbsp;) and <a href="#since">since</a>(&nbsp;) functions
+(note that these functions are platform-specific, i.e. they are not dictated by the SCXML
+Recommendation).</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_callbacks">Callbacks</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>MoonSC virtually supports all SCXML elements, although for some of them (or for some
+of their attributes) it needs assistance from the application and requires it
+via the callbacks described in this section.
+<sup class="footnote">[<a id="_footnoteref_5" class="footnote" href="#_footnote_5" title="View footnote.">5</a>]</sup>
+A few callbacks are also provided to track the execution of the sessions and
+detect errors without the need of adding guards and logs in their statecharts
+using standard SCXML elements (this is useful expecially when developing
+and debugging statecharts).</p>
+</div>
+<div class="paragraph">
+<p>Callbacks are optional, and set with the functions listed below.
+Each of them, when called with a <em>nil</em> or omitted <em>func</em> argument, unsets the corresponding
+callback (if it was previously set).</p>
+</div>
+<div class="paragraph">
+<p>Note that all callbacks that are expected to fetch values must return them synchronously,
+thus they block the execution of all running sessions for the whole duration of
+the fetch operation (this may be a problem if the data has to be fetched over a
+network and the application is running multiple concurrent sessions).</p>
+</div>
+<div id="set_log_callback" class="ulist">
+<ul>
+<li>
+<p><strong>set_log_callback</strong>(<em>func</em>)<br>
+<span class="small">Registers the function <em>func</em> as the 'log callback', which is called
+as <strong><em>func(sessionid, label, expr)</em></strong> each time a &lt;log&gt; element is executed
+in the session identified by <em>sessionid</em>. The <em>label</em> argument is the value of
+the 'label' attribute (or <em>nil</em>, if omitted), while <em>expr</em> is the value resulting
+from evaluating the 'expr' attribute in the session&#8217;s dedicated _ENV (or <em>nil</em>,
+if omitted). If the callback is not set, no action is taken when a &lt;log&gt;
+element is executed.</span></p>
+</li>
+</ul>
+</div>
+<div id="set_script_callback" class="ulist">
+<ul>
+<li>
+<p><strong>set_script_callback</strong>(<em>func</em>)<br>
+<span class="small">Registers the function <em>func</em> as the 'script callback', which is called
+as <strong><em>code=func(src)</em></strong> each time a &lt;script&gt; element is initialized, if
+it has a 'src' attribute. In this case the callback is called passing it the <em>src</em>
+value (a string containing an URI) and is expected to fetch and return
+the corresponding script (a string containing valid Lua code), or <em>nil</em> if it is unable
+to do so.</span></p>
+</li>
+</ul>
+</div>
+<div id="set_data_callback" class="ulist">
+<ul>
+<li>
+<p><strong>set_data_callback</strong>(<em>func</em>)<br>
+<span class="small">Registers the function <em>func</em> as the 'data callback', which is called as
+<strong><em>value=func(text, src)</em></strong> each time a &lt;data&gt; or &lt;assign&gt; element having
+a 'src' attribute or inline data specification is executed. The callback is expected
+to fetch and return the data value corresponding to the passed <em>text</em> or <em>src</em> argument,
+or return <em>nil</em> if it is unable to do it.
+The <em>text</em> argument, if not <em>nil</em>, is the inner content of the &lt;data&gt; or &lt;assign&gt;
+element being executed (a string that should contain inline data specification, possibly markup).
+The <em>src</em> argument, if not <em>nil</em>, is the value of the 'src' attribute of the element (a string
+containing a URI). Only one of <em>text</em> and <em>src</em> is not <em>nil</em>.</span></p>
+</li>
+</ul>
+</div>
+<div id="set_content_callback" class="ulist">
+<ul>
+<li>
+<p><strong>set_content_callback</strong>(<em>func</em>)<br>
+<span class="small">Registers the function <em>func</em> as the 'content callback', which is called as
+<strong><em>value=func(text)</em></strong> each time a &lt;content&gt; element having inline specification
+is executed. The callback is expected to fetch and return the content value corresponding
+to the passed <em>text</em> argument (a string that should contain inline specification, possibly markup),
+or return <em>nil</em> if it is unable to do it.</span></p>
+</li>
+</ul>
+</div>
+<div id="set_send_callback" class="ulist">
+<ul>
+<li>
+<p><strong>set_send_callback</strong>(<em>func</em>)<br>
+<span class="small">Registers the function <em>func</em> as the 'send callback', which is called as
+<strong><em>success=_func(sendinfo)</em></strong> each time a &lt;send&gt; element with a valid 'type' is
+executed that MoonSC does not know how to route.<br>
+The callback receives as argument a <a href="#sendinfo"><em>sendinfo</em></a> table with information from the
+<a href="https://www.w3.org/TR/scxml/#send">&lt;send&gt;</a> element, and is expected to route the message.
+The destination of the message may be either a local session or a remote entity. In the
+former case the application must translate the <em>sendinfo</em> to a <em>eventinfo</em> and
+<a href="#send">send</a>(&nbsp;) the event to the destination session. In the latter case
+it must serialize the message properly and send it to the destination by appropriate means.<br>
+If the routing succeeds, the callback must return <em>true</em>.
+If it fails, the callback may either return <em>false</em> (or <em>nil</em>) or raise a Lua error,
+causing an 'error.communication' or an 'error.execution' (respectively) to be sent back
+to the sender session.<br>
+<strong>Note:</strong> the 'send callback' is called for a &lt;send&gt; element
+only if its 'type' attribute has a value for which an entry exists in the
+<a href="#system_variables"><strong>_ioprocessors</strong></a> system variable. If not, an error event is sent back
+to the sender session, signalling that the I/O processor type is not supported. To add an entry,
+use the <a href="#add_ioprocessor">add_ioprocessor</a>(&nbsp;) function.</span></p>
+</li>
+</ul>
+</div>
+<div id="set_invoke_callback" class="ulist">
+<ul>
+<li>
+<p><strong>set_invoke_callback</strong>(<em>func</em>)<br>
+<span class="small">Registers the function <em>func</em> as the 'invoke callback', which is called as
+<strong><em>childid=func(invokeinfo)</em></strong> each time a &lt;invoke&gt; element is executed.<br>
+The callback receives as argument a <a href="#invokeinfo"><em>invokeinfo</em></a> table with information
+from the <a href="https://www.w3.org/TR/scxml/#invoke">&lt;invoke&gt;</a> element,
+and is expected to invoke the requested service.<br>
+The service may be provided either by a new local session or by a remote entity.
+If the service provider is a local session, the callback is expected to create it
+with <a href="#create">create</a>(&nbsp;) passing it the <em>invokeinfo</em>, and return the
+sessionid assigned to it (MoonSC will use this to automatically route events
+generated with &lt;send&gt; of the 'scxml' type).
+If the service provider is remote, the callback is expected to deliver the request
+to it in the appropriate format and by appropriate means, and return <em>nil</em> (in this
+case the application is also in charge of properly routing any message subsequently
+exchanged by the parent session and the invoked service, which it can do with the
+<a href="#set_send_callback">'send callback'</a> and the <a href="#send">send</a>(&nbsp;) function).</span></p>
+</li>
+</ul>
+</div>
+<div id="set_cancel_callback" class="ulist">
+<ul>
+<li>
+<p><strong>set_cancel_callback</strong>(<em>func</em>)<br>
+<span class="small">Registers the function <em>func</em> as the 'cancel callback', which is called as
+<strong><em>func(invokeinfo, childid)</em></strong> each time a &lt;invoke&gt; element is cancelled due
+to its containing state being exited while the invocation is still ongoing.<br>
+The callback receives as argument the same <a href="#invokeinfo"><em>invokeinfo</em></a> that was passed
+to the <a href="#set_invoke_callback">'invoke callback'</a>, and the <em>childid</em> returned by it
+(if any), and it is expected to <a href="#cancel">cancel</a>(&nbsp;) the child, if it is a local
+session, or to signal the need for cancellation to the remote service provider.</span></p>
+</li>
+</ul>
+</div>
+<div id="set_exit_callback" class="ulist">
+<ul>
+<li>
+<p><strong>set_exit_callback</strong>(<em>func</em>)<br>
+<span class="small">Registers the function <em>func</em> as the 'exit callback', which is called as
+<strong><em>func(sessionid, reason, invokeinfo)</em></strong> when a session exits. The <em>reason</em> argument
+is a string that may be either <em>'done'</em> (normal exit) or <em>'cancelled'</em> (session
+cancelled via the <a href="#cancel">cancel</a>(&nbsp;) function), and <em>invokeinfo</em> argument
+is the value passed at session creation via <a href="#create">create</a>(&nbsp;).</span></p>
+</li>
+</ul>
+</div>
+<div id="set_error_callback" class="ulist">
+<ul>
+<li>
+<p><strong>set_error_callback</strong>(<em>func</em>)<br>
+<span class="small">Registers the function <em>func</em> as the 'exit callback', which is called as
+<strong><em>func(sessionid, name, errmsg)</em></strong> when an execution or communication error
+occurs during the execution of an SCXML element in a running session. The
+<em>name</em> argument is either <em>'error.execution'</em> or <em>'error.communication'</em>, and
+<em>errmsg</em> is a message indicating the occurred error and the offending element.
+(Note that by default MoonSC is robust with respect to these kind of errors, i.e.
+when an error occurs in a session it just raises an error event and continues
+the execution as dictated by the SCXML Recommendation. By setting this callback,
+the application may additionally track these errors and possibly exit as soon
+as one is detected).</span></p>
+</li>
+</ul>
+</div>
+<div id="set_trace_callback" class="ulist">
+<ul>
+<li>
+<p><strong>set_trace_callback</strong>(<em>func</em>)<br>
+<span class="small">Registers the function <em>func</em> as the 'trace callback', which is called as
+<strong><em>func(sessionid, message)</em></strong> when something of interest happens during the execution
+of a running session (e.g. a change of state configuration). Mainly for debug
+and test purposes.</span></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_additional_utilities">Additional utilities</h2>
+<div class="sectionbody">
+<div id="set_env_template" class="ulist">
+<ul>
+<li>
+<p><strong>set_env_template</strong>(<em>env</em>)<br>
+<span class="small">Sets the template for the Lua environments dedicated to sessions (e.g. for sandboxing).<br>
+By default, the template environment is a shallow copy of the main environment (<em>_ENV</em>)
+as it is when the MoonSC module is loaded with
+<a href="http://www.lua.org/manual/5.3/manual.html#pdf-require">require</a>().</span></p>
+</li>
+</ul>
+</div>
+<div id="now" class="ulist">
+<ul>
+<li>
+<p><em>timestamp</em> = <strong>now</strong>( )<br>
+<span class="small">Returns the current system time, in seconds. The system time is relative to
+an unspecified point in the past, that depends on the underlying function used to
+retrieve time from the operating system.<br>
+Session can access this same function from their dedicated _ENV, where it is
+global and defined as <em>Now(&nbsp;)</em>.</span></p>
+</li>
+</ul>
+</div>
+<div id="since" class="ulist">
+<ul>
+<li>
+<p><em>dt</em> = <strong>since</strong>(<em>timestamp</em>)<br>
+<span class="small">Returns the time elapsed from the point in time given by <em>timestamp</em>.<br>
+Session can access this same function from their dedicated _ENV, where it is
+global and defined as <em>Since(&nbsp;)</em>.</span></p>
+</li>
+</ul>
+</div>
+<div id="tostring" class="ulist">
+<ul>
+<li>
+<p><em>string</em> = <strong>tostring</strong>(<em>sessionid</em>)<br>
+<span class="small">Returns a printable description of the statechart for the session identified
+by <em>sessionid</em>, with all its elements arranged in a tree, and their attributes and values.</span></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="system_variables">System variables</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following <a href="https://www.w3.org/TR/scxml/#SystemVariables"><strong>system variables</strong></a> are defined
+as global variables in each session&#8217;s dedicated _ENV:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>_sessionid</em></strong>: the session identifier (a string).</p>
+</li>
+<li>
+<p><strong><em>_name</em></strong>: the value of the 'name' attribute n the root &lt;scxml&gt; element (a string, or <em>nil</em>).</p>
+</li>
+<li>
+<p><strong><em>_event</em></strong>: the event being processed (a <a href="#eventinfo">eventinfo</a> table, or <em>nil</em> when no event
+is being processed).</p>
+</li>
+<li>
+<p><strong><em>_ioprocessors</em></strong>: a table, with an entry for each supported I/O Processor type (indexed by the type
+string), containing related information. By default contains only an entry for the <em>"scxml"</em> value
+(SCXML I/O Processors). Other entries can be added using the <a href="#add_ioprocessor">add_ioprocessor</a>(&nbsp;))function.</p>
+</li>
+<li>
+<p><strong><em>_x</em></strong>: a table, for platform-dependent system variables.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The following are defined only if the session is a 'child session', i.e. created by passing
+a non-<em>nil</em> <em>invokeinfo</em> argument to the <a href="#create">create</a>(&nbsp;) function:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>_invokeid</em></strong>: the <em>invokeid</em> assigned to this session by the parent (a string).</p>
+</li>
+<li>
+<p><strong><em>_x.invokeinfo</em></strong>: the <a href="#invokeinfo">invokeinfo</a> passed at the creation of the session.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The following function can be used to add entries to the _ioprocessor variable for
+processors other than the default SCXML I/O Processor (<em>type="scxml"</em>):</p>
+</div>
+<div id="add_ioprocessor" class="ulist">
+<ul>
+<li>
+<p><strong>add_ioprocessor</strong>(<em>type</em>, <em>location</em>, [<em>info</em>])<br>
+<span class="small">Adds to the <strong>_ioprocessors</strong> system variable the entry for the I/O Processor
+of the given <em>type</em> (a string). The <em>location</em> parameter will be used as value for the
+<em>entry[type].location</em> field. The optional <em>info</em> parameter, is a table whose fields will
+be shallow-copied with the same names in the <em>entry[type]</em> table.</span></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Note: all the system variables are intended to be <strong>read-only</strong>, but MoonSC does little to
+enforce this rule (it just checks that they are not used as 'location' attributes) so it is
+up to the authors of the statecharts to take care not to alter or erase them.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="elements">Elements</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For reference, below is the list of SCXML elements, with links to the relevant sections
+in the SCXML Recommendation.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Core constructs:</strong> <a href="https://www.w3.org/TR/scxml/#scxml">&lt;scxml&gt;</a>,
+<a href="https://www.w3.org/TR/scxml/#state">&lt;state&gt;</a>,
+<a href="https://www.w3.org/TR/scxml/#parallel">&lt;parallel&gt;</a>,
+<a href="https://www.w3.org/TR/scxml/#transition">&lt;transition&gt;</a>,
+<a href="https://www.w3.org/TR/scxml/#initial">&lt;initial&gt;</a>,
+<a href="https://www.w3.org/TR/scxml/#final">&lt;final&gt;</a>,
+<a href="https://www.w3.org/TR/scxml/#onentry">&lt;onentry&gt;</a>,
+<a href="https://www.w3.org/TR/scxml/#onexit">&lt;onexit&gt;</a>,
+<a href="https://www.w3.org/TR/scxml/#history">&lt;history&gt;</a>.</p>
+</li>
+<li>
+<p><strong>Executable elements:</strong>
+<a href="https://www.w3.org/TR/scxml/#raise">&lt;raise&gt;</a>,
+<a href="https://www.w3.org/TR/scxml/#if">&lt;if&gt;</a>,
+<a href="https://www.w3.org/TR/scxml/#elseif">&lt;elseif&gt;</a>,
+<a href="https://www.w3.org/TR/scxml/#else">&lt;else&gt;</a>,
+<a href="https://www.w3.org/TR/scxml/#foreach">&lt;foreach&gt;</a>,
+<a href="https://www.w3.org/TR/scxml/#log">&lt;log&gt;</a>.</p>
+</li>
+<li>
+<p><strong>Data Manipulation:</strong>
+<a href="https://www.w3.org/TR/scxml/#datamodel">&lt;datamodel&gt;</a>,
+<a href="https://www.w3.org/TR/scxml/#data">&lt;data&gt;</a>,
+<a href="https://www.w3.org/TR/scxml/#assign">&lt;assign&gt;</a>,
+<a href="https://www.w3.org/TR/scxml/#donedata">&lt;donedata&gt;</a>,
+<a href="https://www.w3.org/TR/scxml/#content">&lt;content&gt;</a>,
+<a href="https://www.w3.org/TR/scxml/#param">&lt;param&gt;</a>,
+<a href="https://www.w3.org/TR/scxml/#script">&lt;script&gt;</a>.</p>
+</li>
+<li>
+<p><strong>External communications:</strong>
+<a href="https://www.w3.org/TR/scxml/#send">&lt;send&gt;</a>,
+<a href="https://www.w3.org/TR/scxml/#cancel">&lt;cancel&gt;</a>,
+<a href="https://www.w3.org/TR/scxml/#invoke">&lt;invoke&gt;</a>,
+<a href="https://www.w3.org/TR/scxml/#finalize">&lt;finalize&gt;</a>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>All elements are supported, with a few caveats:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>MoonSC ignores any attribute whose name it does not recognize for the given element type.</p>
+</li>
+<li>
+<p>In the root <strong>&lt;scxml&gt;</strong> element, the <strong>'xmlns'</strong> attribute is not supported, the <strong>'version'</strong> attribute
+is optional and defaults to <em>"1.0"</em>, and the <strong>'datamodel'</strong> attribute defaults to <em>"lua"</em>, which is
+the only admitted value (the <em>"lua"</em> datamodel is described in the <a href="#luadatamodel">Data Model</a>
+section of this document).</p>
+</li>
+<li>
+<p>Assistance is required from the application (via <a href="#callbacks">callbacks</a>) to fully support
+the following elements or attributes:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>The <strong>&lt;log&gt;</strong> element requires assistance via the <a href="#set_log_callback">'log callback'</a>.</p>
+</li>
+<li>
+<p>The <strong>&lt;data&gt;.src</strong>, <strong>&lt;data&gt;.text</strong>, and <strong>&lt;assign&gt;.text</strong> attributes require assistance
+via the <a href="#set_data_callback">'data callback'</a>.</p>
+</li>
+<li>
+<p>The <strong>&lt;content&gt;.text</strong> attribute requires assistance via the
+<a href="#set_content_callback">'content callback'</a>.</p>
+</li>
+<li>
+<p>The <strong>&lt;script&gt;.src</strong> attribute requires assistance via the <a href="#set_script_callback">'script callback'</a>.</p>
+</li>
+<li>
+<p>The <strong>&lt;invoke&gt;</strong> element requires assistance via the <a href="#set_invoke_callback">'invoke callback'</a>
+and possibly the <a href="#set_cancel_callback">'cancel callback'</a>.</p>
+</li>
+<li>
+<p>The <strong>&lt;send&gt;</strong> element requires assistance via the <a href="#set_send_callback">'send callback'</a>
+to support I/O Processors other than <em>"scxml"</em>, or targets other that the special ones, or remote
+destinations.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>(In the above list, a 'text' attribute actually refers to textual or non-SCXML markup content).</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_structs">Structs</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a id="eventinfo"></a>
+<span class="small"><strong>eventinfo</strong> = {<br>
+<em>type</em>: '<em>external</em>' | '<em>internal</em>' | '<em>platform</em>',<br>
+<em>name</em>: event name (a string),<br>
+<em>sendid</em>: id assigned by sender (a string, opt.),<br>
+<em>origin</em>: URI to be used as  &lt;send&gt;.target in replies (a string, opt.),<br>
+<em>origintype</em>: I/O processor to be used as &lt;send&gt;.type in replies (a string, opt.),<br>
+<em>invokeid</em>: the <em>invokeid</em> assigned by the parent session (a string, only in child-to-parent messages),<br>
+<em>data</em>: the contained <a href="#data">data</a> (opt.),<br>
+} (rfr. <a href="https://www.w3.org/TR/scxml/#SystemVariables">5.10.1 The Internal Structure of Events</a>)</span></p>
+</li>
+<li>
+<p><a id="sendinfo"></a>
+<span class="small"><strong>sendinfo</strong> = {<br>
+<em>sourceid</em>: the sessionid of the sending session (a string),<br>
+<em>type</em>: the value of 'type', or resulting from evaluating 'typeexpr' (a string),<br>
+<em>target</em>: the value of 'target', or resulting from evaluating 'targetexpr' (a string, opt.),<br>
+<em>event</em>:  the value of 'event', or resulting from evaluating 'eventexpr' (a string, opt.),<br>
+<em>sendid</em>: the 'id' of the send (opt.),<br>
+<em>data</em>: the contained <a href="#data">data</a> (opt.),<br>
+} (rfr. <a href="https://www.w3.org/TR/scxml/#send">6.2 &lt;send&gt;</a>)</span></p>
+</li>
+<li>
+<p><a id="invokeinfo"></a>
+<span class="small"><strong>invokeinfo</strong> = {<br>
+<em>parentid</em>: the sessionid of the parent session, if local (a string, opt.),<br>
+<em>invokeid</em>: the 'id' assigned by the parent session (a string, opt.),<br>
+<em>type</em>: the value of 'type', or resulting from evaluating 'typeexpr' (a string),<br>
+<em>autoforward</em>: the value of 'autoforward' (a boolean),<br>
+<em>src</em>:  the value of 'src', or resulting from evaluating 'srcexpr' (a string, opt.),<br>
+<em>data</em>: the contained <a href="#data">data</a> (opt.),<br>
+} (rfr. <a href="https://www.w3.org/TR/scxml/#invoke">6.4 &lt;invoke&gt;</a>)</span></p>
+</li>
+<li>
+<p><a id="data"></a>
+<span class="small"><strong>data</strong> = a table with name-value pairs (<em>data[name]=value</em>).<br>
+When used to represent the data contained in a &lt;send&gt; or &lt;invoke&gt; element,
+the <em>data</em> table may contain the name-value pair for the 'content' attribute
+(<em>data.content</em>, a string) and/or all those for the names in the 'namelist' attribute
+and for the variables in any &lt;param&gt; children.
+In case of duplicate names, the last encountered value is used ('content' is evaluated
+before 'namelist', which is evaluated before &lt;param&gt; children, which are
+evaluated in document order, so the last &lt;param&gt; wins).</span></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Note: all these 'structs' (tables, actually) are passed around by reference in MoonSC,
+so for example when passing a <a href="#data"><em>data</em></a> table to the <a href="#send">send</a>(&nbsp;)
+function, the caller must take care not to alter its contents.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<hr>
+<div class="footnote" id="_footnote_1">
+<a href="#_footnoteref_1">1</a>. This manual is written in <a href="http://www.methods.co.nz/asciidoc/">AsciiDoc</a>, rendered with <a href="http://asciidoctor.org/">AsciiDoctor</a> and a CSS from the <a href="https://github.com/asciidoctor/asciidoctor-stylesheet-factory">AsciiDoctor Stylesheet Factory</a>.
+</div>
+<div class="footnote" id="_footnote_2">
+<a href="#_footnoteref_2">2</a>. The parsing of actual SCXML documents to produce statecharts in form of Lua tables is outside the scope of MoonSC and, if needed, delegated to external tools.
+</div>
+<div class="footnote" id="_footnote_3">
+<a href="#_footnoteref_3">3</a>. MoonSC does not assign session ids automatically by default, because the designer may want to cluster the sessions running in different OS processes into a single set of 'local' sessions, having ids unique in the same domain (or, to put it in another way, she may want to execute local sessions in different OS processes, e.g. to run them in parallel). By having control on the assignment of session ids, she can ensure that those of sessions running in different processes do not collide.
+</div>
+<div class="footnote" id="_footnote_4">
+<a href="#_footnoteref_4">4</a>. A call of the <a href="#trigger">trigger</a>(&nbsp;) function executes, for every running session, an iteration of the main loop of the <a href="https://www.w3.org/TR/scxml/#AlgorithmforSCXMLInterpretation">SCXML algorithm</a>.
+</div>
+<div class="footnote" id="_footnote_5">
+<a href="#_footnoteref_5">5</a>. In particular, by design MoonSC does not create new sessions autonomously, it does not support any I/O processor other than the SCXML Event I/O Processor, it does not have built-in networking capabilities, and it doesn&#8217;t understand markup other than SCXML in its Lua-table equivalent representation. So, any time a service is invoked by a running session, or an event has to be routed to a remote destination, or a value must be retrieved from an URI, or some markup content must be interpreted, MoonSC invokes the intervention of the application via a callback.
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.1<br>
+Last updated 2019-04-04 18:10:43 CEST
+</div>
+</div>
+</body>
+</html>
