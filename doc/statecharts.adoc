@@ -18,22 +18,8 @@ element[1]   -- 1-st SCXML child element, in document order (a table),
 element[2]   -- 2-nd SCXML child element, in document order (a table),
 -- ...
 element[N]   -- N-th SCXML child element, in document order (a table),
-element.text -- text and/or non-SCXML markup content (a string).
+element.text -- embedded text and/or markup content (a string).
 ----
-
-////
-The table *t* representing an element has the following contents:
-
-* *t.tag* = the element's tag (a string, e.g. _'scxml'_, _'state'_, _'parallel'_, etc.)
-* *t.xxx* = the value of the attribute named 'xxx' (a string),
-* *t.yyy* = the value of the attribute named 'yyy' (a string),
-* ...
-* *t[1]* = 1-st SCXML child element, in document order (a similar table),
-* *t[2]* = 2-nd SCXML child element, in document order (a similar table),
-* ...
-* *t[n]* = n-th SCXML child element, in document order (a similar table),
-* *t.text* = text and/or non-SCXML markup content (a string).
-////
 
 The rules dictated by the SCXML recommendation apply to their Lua-table equivalent as well,
 specifying which attributes an element may have and their admitted values, which types of

@@ -964,7 +964,7 @@ of the <strong>&lt;scxml&gt;</strong> type (i.e. having <em>element.tag="scxml"<
  <span class="tok-n">element</span><span class="tok-p">[</span><span class="tok-mi">2</span><span class="tok-p">]</span>   <span class="tok-c1">-- 2-nd SCXML child element, in document order (a table),</span>
  <span class="tok-c1">-- ...</span>
  <span class="tok-n">element</span><span class="tok-p">[</span><span class="tok-n">N</span><span class="tok-p">]</span>   <span class="tok-c1">-- N-th SCXML child element, in document order (a table),</span>
- <span class="tok-n">element</span><span class="tok-p">.</span><span class="tok-n">text</span> <span class="tok-c1">-- text and/or non-SCXML markup content (a string).</span></code></pre>
+ <span class="tok-n">element</span><span class="tok-p">.</span><span class="tok-n">text</span> <span class="tok-c1">-- embedded text and/or markup content (a string).</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1742,6 +1742,21 @@ the only admitted value (the <em>"lua"</em> datamodel is described in the <a hre
 section of this document).</p>
 </li>
 <li>
+<p>A <strong>'text'</strong> attribute, which doesn&#8217;t exist in pure SCXML elements, is added in their Lua-table
+form to contain any embedded textual or markup content. The 'text' attribute may occur in
+<strong>&lt;script&gt;</strong>, <strong>&lt;data&gt;</strong>,  <strong>&lt;assign&gt;</strong>, and <strong>&lt;content&gt;</strong> elements.</p>
+</li>
+<li>
+<p>The only value recognized for the <strong>&lt;send&gt;.type</strong> attribute is <em>"scxml</em>", short form
+for <em>"http://www.w3.org/TR/scxml/#SCXMLEventProcessor"</em>, that is not recognized.
+Any other value is either handled via callbacks (see below) or causes an error event.</p>
+</li>
+<li>
+<p>The only value recognized for the <strong>&lt;invoke&gt;.type</strong> attribute is <em>"scxml</em>" (short form
+for <em>"http://www.w3.org/TR/scxml/"</em>, that is not recognized).
+Any other value is either handled via callbacks (see below) or causes an error event.</p>
+</li>
+<li>
 <p>Assistance is required from the application (via <a href="#callbacks">callbacks</a>) to fully support
 the following elements or attributes:</p>
 <div class="ulist">
@@ -1773,9 +1788,6 @@ destinations.</p>
 </div>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p>(In the above list, a 'text' attribute actually refers to textual or non-SCXML markup content).</p>
 </div>
 </div>
 </div>

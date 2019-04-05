@@ -42,6 +42,15 @@ All elements are supported, with a few caveats:
 is optional and defaults to _"1.0"_, and the *'datamodel'* attribute defaults to _"lua"_, which is
 the only admitted value (the _"lua"_ datamodel is described in the <<luadatamodel, Data Model>>
 section of this document).
+* A *'text'* attribute, which doesn't exist in pure SCXML elements, is added in their Lua-table
+form to contain any embedded textual or markup content. The 'text' attribute may occur in
+*&lt;script&gt;*, *&lt;data&gt;*,  *&lt;assign&gt;*, and *&lt;content&gt;* elements.
+* The only value recognized for the *&lt;send&gt;.type* attribute is _"scxml_", short form
+for _"http://www.w3.org/TR/scxml/#SCXMLEventProcessor"_, that is not recognized.
+Any other value is either handled via callbacks (see below) or causes an error event.
+* The only value recognized for the *&lt;invoke&gt;.type* attribute is _"scxml_" (short form
+for _"http://www.w3.org/TR/scxml/"_, that is not recognized).
+Any other value is either handled via callbacks (see below) or causes an error event.
 * Assistance is required from the application (via <<callbacks, callbacks>>) to fully support
 the following elements or attributes:
 ** The *&lt;log&gt;* element requires assistance via the <<set_log_callback, 'log callback'>>.
@@ -55,6 +64,4 @@ and possibly the <<set_cancel_callback, 'cancel callback'>>.
 ** The *&lt;send&gt;* element requires assistance via the <<set_send_callback, 'send callback'>>
 to support I/O Processors other than _"scxml"_, or targets other that the special ones, or remote
 destinations.
-
-(In the above list, a 'text' attribute actually refers to textual or non-SCXML markup content).
 
