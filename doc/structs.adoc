@@ -42,7 +42,9 @@ In case of duplicate names, the last encountered value is used ('content' is eva
 before 'namelist', which is evaluated before &lt;param&gt; children, which are 
 evaluated in document order, so the last &lt;param&gt; wins).#
 
-Note: all these 'structs' (tables, actually) are passed around by reference in MoonSC,
-so for example when passing a <<data, _data_>> table to the <<send, send>>(&nbsp;)
-function, the caller must take care not to alter its contents.
+Note: all these 'structs' (tables, actually) are *passed around by reference*,
+so care must be taken not to alter a struct after having passed it - e.g. a <<data, _data_>>
+table after having passed it to the <<send, send>>(&nbsp;) function - nor to alter a struct
+received as argument - e.g. the <<invokeinfo, _invokeinfo_>> table received as argument in
+the <<set_invoke_callback, 'invoke callback'>>.
 

@@ -21,7 +21,7 @@ a non-_nil_ _invokeinfo_ argument to the <<create, create>>(&nbsp;) function:
 * *_$$_x.invokeinfo$$_*: the <<invokeinfo, invokeinfo>> passed at the creation of the session.
 
 
-The following function can be used to add entries to the $$_$$ioprocessor variable for
+The following function can be used to add entries to the _$$_$$ioprocessors_ variable for
 processors other than the default SCXML I/O Processor (_type="scxml"_):
 
 [[add_ioprocessor]]

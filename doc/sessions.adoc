@@ -4,7 +4,7 @@
 An SCXML *session* is an executable instance of an SCXML statechart.
 
 A MoonSC application is capable of running multiple concurrent sessions, which it
-creates and starts with the <<create, create>>(&nbsp;) with the <<start, start>>(&nbsp;)
+creates and starts with the <<create, create>>(&nbsp;) and the <<start, start>>(&nbsp;)
 functions. The application may create sessions at any time, on its own initiative, or to
 serve requests from other entities (other sessions, or whatever).
 
@@ -31,7 +31,7 @@ running session, an iteration of the main loop of the
 https://www.w3.org/TR/scxml/#AlgorithmforSCXMLInterpretation[SCXML algorithm].]
 
 A session terminates when it reaches a top-level &lt;final&gt; state, or
-when it is cancelled by the application using the <<cancel, cancel>>(&nbsp;) function,
+when it is cancelled by the application with <<cancel, cancel>>(&nbsp;),
 e.g. upon a cancellation request from the parent session because it exited the state
 containing the &lt;invoke&gt;. When it terminates, it is deleted from the internal
 database of sessions.
@@ -68,12 +68,16 @@ transition (note that this implies that the session is actually cancelled only w
 this special event is processed, after any other event that was already enqueued).#
 
 [[trigger]]
-* _nsession_ = *trigger*(&nbsp;) +
+* _running_ = *trigger*(&nbsp;) +
 [small]#Executes an iteration of the SCXML algorithm's main loop for each session that
 is currently running in the system.
 Statecharts' transitions are executed only within calls of this function, that the application
 is expected to call repeatedly, e.g. at each iteration of its own main loop. +
-Returns _true_ if there are still sessions in the system, otherwise returns _false_.#
+Returns _true_ if there are still sessions in the system, otherwise returns _false_. +
+*Note:* This function is executed in protected mode. This means that the application does
+not exit if an error occurs during its execution. Instead, an error event is sent back to the
+session where the error occurred (if the SCXML Recommendation says so) and the
+<<set_error_callback, 'error callback'>> is called (if set).#
 
 [[active_states]]
 * _{stateid}_ = *active_states*(_sessionid_) +

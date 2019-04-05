@@ -1035,7 +1035,7 @@ first with the tags added manually, and then using element constructors:</p>
     <span class="tok-n">_state</span><span class="tok-p">{</span> <span class="tok-n">id</span><span class="tok-o">=</span><span class="tok-s2">&quot;s1&quot;</span><span class="tok-p">,</span>
        <span class="tok-n">_transition</span><span class="tok-p">{</span> <span class="tok-n">event</span><span class="tok-o">=</span><span class="tok-s2">&quot;go&quot;</span><span class="tok-p">,</span> <span class="tok-n">target</span><span class="tok-o">=</span><span class="tok-s2">&quot;s2&quot;</span><span class="tok-p">,</span> <span class="tok-n">_log</span><span class="tok-p">{</span> <span class="tok-n">expr</span><span class="tok-o">=</span><span class="tok-s2">&quot;&#39;Hello, World!&#39;&quot;</span> <span class="tok-p">}</span> <span class="tok-p">},</span>
     <span class="tok-p">},</span>
-   <span class="tok-n">_final</span><span class="tok-p">{</span> <span class="tok-n">id</span><span class="tok-o">=</span><span class="tok-s2">&quot;s2&quot;</span> <span class="tok-p">},</span>
+    <span class="tok-n">_final</span><span class="tok-p">{</span> <span class="tok-n">id</span><span class="tok-o">=</span><span class="tok-s2">&quot;s2&quot;</span> <span class="tok-p">},</span>
  <span class="tok-p">}</span></code></pre>
 </div>
 </div>
@@ -1072,7 +1072,7 @@ of the previous example:</p>
 </div>
 <div class="paragraph">
 <p>A MoonSC application is capable of running multiple concurrent sessions, which it
-creates and starts with the <a href="#create">create</a>(&nbsp;) with the <a href="#start">start</a>(&nbsp;)
+creates and starts with the <a href="#create">create</a>(&nbsp;) and the <a href="#start">start</a>(&nbsp;)
 functions. The application may create sessions at any time, on its own initiative, or to
 serve requests from other entities (other sessions, or whatever).</p>
 </div>
@@ -1095,7 +1095,7 @@ are executed only within calls of this function.
 </div>
 <div class="paragraph">
 <p>A session terminates when it reaches a top-level &lt;final&gt; state, or
-when it is cancelled by the application using the <a href="#cancel">cancel</a>(&nbsp;) function,
+when it is cancelled by the application with <a href="#cancel">cancel</a>(&nbsp;),
 e.g. upon a cancellation request from the parent session because it exited the state
 containing the &lt;invoke&gt;. When it terminates, it is deleted from the internal
 database of sessions.</p>
@@ -1151,12 +1151,16 @@ this special event is processed, after any other event that was already enqueued
 <div id="trigger" class="ulist">
 <ul>
 <li>
-<p><em>nsession</em> = <strong>trigger</strong>(&nbsp;)<br>
+<p><em>running</em> = <strong>trigger</strong>(&nbsp;)<br>
 <span class="small">Executes an iteration of the SCXML algorithm&#8217;s main loop for each session that
 is currently running in the system.
 Statecharts' transitions are executed only within calls of this function, that the application
 is expected to call repeatedly, e.g. at each iteration of its own main loop.<br>
-Returns <em>true</em> if there are still sessions in the system, otherwise returns <em>false</em>.</span></p>
+Returns <em>true</em> if there are still sessions in the system, otherwise returns <em>false</em>.<br>
+<strong>Note:</strong> This function is executed in protected mode. This means that the application does
+not exit if an error occurs during its execution. Instead, an error event is sent back to the
+session where the error occurred (if the SCXML Recommendation says so) and the
+<a href="#set_error_callback">'error callback'</a> is called (if set).</span></p>
 </li>
 </ul>
 </div>
@@ -1387,15 +1391,23 @@ using standard SCXML elements (this is useful expecially when developing
 and debugging statecharts).</p>
 </div>
 <div class="paragraph">
-<p>Callbacks are optional, and set with the functions listed below.
+<p>Callbacks are <strong>optional</strong>, and set with the functions listed below.
 Each of them, when called with a <em>nil</em> or omitted <em>func</em> argument, unsets the corresponding
 callback (if it was previously set).</p>
 </div>
 <div class="paragraph">
-<p>Note that all callbacks that are expected to fetch values must return them synchronously,
+<p>Note that all callbacks that are expected to fetch values must return them <strong>synchronously</strong>,
 thus they block the execution of all running sessions for the whole duration of
 the fetch operation (this may be a problem if the data has to be fetched over a
 network and the application is running multiple concurrent sessions).</p>
+</div>
+<div class="paragraph">
+<p>Also note that callbacks are usually executed within calls of the
+<a href="#trigger">trigger</a>(&nbsp;) function, so they are <strong>protected calls</strong>
+<sup class="footnote">[<a id="_footnoteref_6" class="footnote" href="#_footnote_6" title="View footnote.">6</a>]</sup>
+This means that any error occurring in them - either an unintentional bug or an intentional
+call of standard Lua assert(&nbsp;) or error(&nbsp;) - will not cause the application to
+exit but will instead result in an error event being sent to the session being executed.</p>
 </div>
 <div id="set_log_callback" class="ulist">
 <ul>
@@ -1646,7 +1658,7 @@ a non-<em>nil</em> <em>invokeinfo</em> argument to the <a href="#create">create<
 </ul>
 </div>
 <div class="paragraph">
-<p>The following function can be used to add entries to the _ioprocessor variable for
+<p>The following function can be used to add entries to the <em>_ioprocessors</em> variable for
 processors other than the default SCXML I/O Processor (<em>type="scxml"</em>):</p>
 </div>
 <div id="add_ioprocessor" class="ulist">
@@ -1820,9 +1832,11 @@ evaluated in document order, so the last &lt;param&gt; wins).</span></p>
 </ul>
 </div>
 <div class="paragraph">
-<p>Note: all these 'structs' (tables, actually) are passed around by reference in MoonSC,
-so for example when passing a <a href="#data"><em>data</em></a> table to the <a href="#send">send</a>(&nbsp;)
-function, the caller must take care not to alter its contents.</p>
+<p>Note: all these 'structs' (tables, actually) are <strong>passed around by reference</strong>,
+so care must be taken not to alter a struct after having passed it - e.g. a <a href="#data"><em>data</em></a>
+table after having passed it to the <a href="#send">send</a>(&nbsp;) function - nor to alter a struct
+received as argument - e.g. the <a href="#invokeinfo"><em>invokeinfo</em></a> table received as argument in
+the <a href="#set_invoke_callback">'invoke callback'</a>.</p>
 </div>
 </div>
 </div>
@@ -1843,6 +1857,9 @@ function, the caller must take care not to alter its contents.</p>
 </div>
 <div class="footnote" id="_footnote_5">
 <a href="#_footnoteref_5">5</a>. In particular, by design MoonSC does not create new sessions autonomously, it does not support any I/O processor other than the SCXML Event I/O Processor, it does not have built-in networking capabilities, and it doesn&#8217;t understand markup other than SCXML in its Lua-table equivalent representation. So, any time a service is invoked by a running session, or an event has to be routed to a remote destination, or a value must be retrieved from an URI, or some markup content must be interpreted, MoonSC invokes the intervention of the application via a callback.
+</div>
+<div class="footnote" id="_footnote_6">
+<a href="#_footnoteref_6">6</a>. The exception being the case of callbacks called at initialization time, when the <a href="#create">create</a>(&nbsp;) function is called outside the <a href="#trigger">trigger</a>(&nbsp;) function (for example, when the application creates an initial session before entering the main loop).
 </div>
 </div>
 <div id="footer">

@@ -18,14 +18,24 @@ using standard SCXML elements (this is useful expecially when developing
 and debugging statecharts).
 
 
-Callbacks are optional, and set with the functions listed below.
+Callbacks are *optional*, and set with the functions listed below.
 Each of them, when called with a _nil_ or omitted _func_ argument, unsets the corresponding
 callback (if it was previously set).
 
-Note that all callbacks that are expected to fetch values must return them synchronously,
+Note that all callbacks that are expected to fetch values must return them *synchronously*,
 thus they block the execution of all running sessions for the whole duration of
 the fetch operation (this may be a problem if the data has to be fetched over a
 network and the application is running multiple concurrent sessions).
+
+Also note that callbacks are usually executed within calls of the
+<<trigger, trigger>>(&nbsp;) function, so they are *protected calls*
+footnote:[The exception being the case of callbacks called at initialization time,
+when the <<create, create>>(&nbsp;) function is called outside the <<trigger, trigger>>(&nbsp;)
+function (for example, when the application creates an initial session before
+entering the main loop).]
+This means that any error occurring in them - either an unintentional bug or an intentional
+call of standard Lua assert(&nbsp;) or error(&nbsp;) - will not cause the application to
+exit but will instead result in an error event being sent to the session being executed.
 
 [[set_log_callback]]
 * *set_log_callback*(_func_) +

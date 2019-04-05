@@ -96,7 +96,7 @@ local helloworld = _scxml{ version="1.0", name="Hello", initial="s1",
    _state{ id="s1",
       _transition{ event="go", target="s2", _log{ expr="'Hello, World!'" } },
    },
-  _final{ id="s2" },
+   _final{ id="s2" },
 }
 ----
 
