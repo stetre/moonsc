@@ -22,6 +22,12 @@ global and defined as _Now(&nbsp;)_.#
 Session can access this same function from their dedicated $$_ENV$$, where it is
 global and defined as _Since(&nbsp;)_.#
 
+[[sleep]]
+* *sleep*(_seconds_) +
+[small]#Sleeps for the given amount of _seconds_ (returns immediately if _seconds_
+is less than or equal to zero).#
+
+
 [[tostring]]
 * _string_ = *tostring*(_sessionid_) +
 [small]#Returns a printable description of the statechart for the session identified

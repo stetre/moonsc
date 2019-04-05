@@ -68,12 +68,17 @@ transition (note that this implies that the session is actually cancelled only w
 this special event is processed, after any other event that was already enqueued).#
 
 [[trigger]]
-* _running_ = *trigger*(&nbsp;) +
+* _tnext_ = *trigger*(&nbsp;) +
 [small]#Executes an iteration of the SCXML algorithm's main loop for each session that
 is currently running in the system.
 Statecharts' transitions are executed only within calls of this function, that the application
 is expected to call repeatedly, e.g. at each iteration of its own main loop. +
-Returns _true_ if there are still sessions in the system, otherwise returns _false_. +
+Returns _nil_ if there are no more sessions running in the system, otherwise returns the
+next time at which this function needs to be called, unless in the meanwhile other events
+are sent to any session with <<send, send>>(&nbsp;) and <<raise, raise>>(&nbsp;) or other
+sessions are created, in which case this function should be called immediately after.
+The _tnext_ time value is on the same time base of the values returned by
+the <<now, now>>(&nbsp;) function. +
 *Note:* This function is executed in protected mode. This means that the application does
 not exit if an error occurs during its execution. Instead, an error event is sent back to the
 session where the error occurred (if the SCXML Recommendation says so) and the

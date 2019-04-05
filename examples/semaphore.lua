@@ -38,5 +38,17 @@ print(moonsc.tostring(sessionid))
 
 print("This example goes on indefinitely (type ctrl-C to stop it)\n")
 moonsc.start(sessionid)
-while moonsc.trigger() do end
+while true do
+   local tnext = moonsc.trigger()
+   if not tnext then break end -- no more sessions running in the system
+   -- tnext is the next time we need to call trigger(), unless in the meanwhile
+   -- we send events from the application to any running session, in which case
+   -- we must call it immediately after so that sessions can process them.
+   -- Since this is not the case, we can sleep() until tnext arrives (or, if for
+   -- example we are listening to sockets, we could set the select() timeout
+   -- accordingly). This allows us to save a huge amount of CPU time in systems
+   -- that are not continuosly stimulated and/or do not have (for example) to
+   -- render graphics at the highest possible rate.
+   moonsc.sleep(tnext - moonsc.now())
+end
 

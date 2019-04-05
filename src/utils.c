@@ -265,10 +265,18 @@ static int Since(lua_State *L)
     return 1;
     }
 
+static int Sleeep(lua_State *L)
+    {
+    double seconds = luaL_checknumber(L, 1);
+    if(seconds > 0) sleeep(seconds);
+    return 0;
+    }
+
 static const struct luaL_Reg Functions[] = 
     {
         { "now", Now },
         { "since", Since },
+        { "sleep", Sleeep },
         { NULL, NULL } /* sentinel */
     };
 

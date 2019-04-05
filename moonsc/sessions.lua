@@ -28,7 +28,7 @@
 
 local moonsc, internal
  -- imported functions:
-local start_session, loop_iteration, new_env, path
+local now, start_session, loop_iteration, new_env, path
 local copy_statechart, validate_statechart, delete_dynamic_id
 local delay_push, delay_pop, delay_tnext, delay_reset
 -- callbacks:
@@ -156,6 +156,7 @@ local function send_event(scxml, eventinfo) --@@ sanitize event
       scxml._extqueue:push(eventinfo)
    elseif t == 'internal' or t=='platform' then
       scxml._intqueue:push(eventinfo)
+      scxml._macrostep=true
    else
       error("invalid eventinfo.type")
    end
@@ -357,14 +358,17 @@ local function is_active(sessionid, stateid)
 end
 
 
+
 local function trigger()
+   local callmesoon = false
    flush_delayed_sends()
    for _, scxml in pairs(Sessions) do
       if scxml._running then -- running or done
          loop_iteration(scxml)
+         callmesoon = callmesoon or scxml._macrostep or #scxml._extqueue>0
       end 
    end
-   return Nsessions > 0 --@@ return also tnext ?
+   return Nsessions > 0 and (callmesoon and now() or delay_tnext()) or nil
 end
 
 -------------------------------------------------------------------------------
@@ -388,6 +392,7 @@ local function open(moonsc_, internal_)
    delay_pop = moonsc.delay_pop;  moonsc.delay_pop = nil
    delay_tnext = moonsc.delay_tnext;  moonsc.delay_tnext = nil
    delay_reset = moonsc.delay_reset;  moonsc.delay_reset = nil
+   now = moonsc.now
    internal.delete_session = delete_session
    internal.set_event = set_event
    internal.set_system_variables = set_system_variables

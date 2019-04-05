@@ -1151,12 +1151,17 @@ this special event is processed, after any other event that was already enqueued
 <div id="trigger" class="ulist">
 <ul>
 <li>
-<p><em>running</em> = <strong>trigger</strong>(&nbsp;)<br>
+<p><em>tnext</em> = <strong>trigger</strong>(&nbsp;)<br>
 <span class="small">Executes an iteration of the SCXML algorithm&#8217;s main loop for each session that
 is currently running in the system.
 Statecharts' transitions are executed only within calls of this function, that the application
 is expected to call repeatedly, e.g. at each iteration of its own main loop.<br>
-Returns <em>true</em> if there are still sessions in the system, otherwise returns <em>false</em>.<br>
+Returns <em>nil</em> if there are no more sessions running in the system, otherwise returns the
+next time at which this function needs to be called, unless in the meanwhile other events
+are sent to any session with <a href="#send">send</a>(&nbsp;) and <a href="#raise">raise</a>(&nbsp;) or other
+sessions are created, in which case this function should be called immediately after.
+The <em>tnext</em> time value is on the same time base of the values returned by
+the <a href="#now">now</a>(&nbsp;) function.<br>
 <strong>Note:</strong> This function is executed in protected mode. This means that the application does
 not exit if an error occurs during its execution. Instead, an error event is sent back to the
 session where the error occurred (if the SCXML Recommendation says so) and the
@@ -1600,6 +1605,15 @@ global and defined as <em>Now(&nbsp;)</em>.</span></p>
 <span class="small">Returns the time elapsed from the point in time given by <em>timestamp</em>.<br>
 Session can access this same function from their dedicated _ENV, where it is
 global and defined as <em>Since(&nbsp;)</em>.</span></p>
+</li>
+</ul>
+</div>
+<div id="sleep" class="ulist">
+<ul>
+<li>
+<p><strong>sleep</strong>(<em>seconds</em>)<br>
+<span class="small">Sleeps for the given amount of <em>seconds</em> (returns immediately if <em>seconds</em>
+is less than or equal to zero).</span></p>
 </li>
 </ul>
 </div>
