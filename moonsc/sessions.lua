@@ -290,6 +290,8 @@ end
 -- Invoke processor
 -------------------------------------------------------------------------------
 
+local callmesoon -- call trigger() as soon as possible if this is true
+
 local function create(sessionid, statechart, start, invokeinfo)
 -- Validates a statechart given as a Lua table, compiles all its executable contents
 -- and builds the associated meta information needed to execute the statechart.
@@ -309,6 +311,7 @@ local function create(sessionid, statechart, start, invokeinfo)
    Nsessions = Nsessions + 1
    validate_statechart(scxml, invokeinfo)
    if start then start_session(scxml) end
+   callmesoon = true -- this is relevant only for create() within callback
 end
 
 local function start(sessionid) --@@ also pause/resume?
@@ -357,10 +360,8 @@ local function is_active(sessionid, stateid)
    return scxml._activestates:ismember(s)
 end
 
-
-
 local function trigger()
-   local callmesoon = false
+   callmesoon = false
    flush_delayed_sends()
    for _, scxml in pairs(Sessions) do
       if scxml._running then -- running or done
