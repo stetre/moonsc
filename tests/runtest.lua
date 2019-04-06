@@ -4,6 +4,7 @@
 -- a top-level <final> state with id='pass', or in one with id='fail'.
 
 local moonsc = require("moonsc")
+local now, sleep = moonsc.now, moonsc.sleep
 local verbose = false
 local pass = false -- true if the last executed test succeeded
 
@@ -19,7 +20,11 @@ local function runtest(filename)
    moonsc.create(sessionid, statechart)
    moonsc.start(sessionid)
 
-   while moonsc.trigger() do end
+   local tnext = now()
+   while tnext do
+      sleep(tnext - now())
+      tnext = moonsc.trigger()
+   end
 
    print("*** TEST "..(pass and "PASSED" or "FAILED").." ("..filename..")")
    return pass
@@ -84,7 +89,7 @@ end)
 
 moonsc.set_script_callback(function(src)
 -- Called by <script> elements to retrieve the script code when it is
--- specified with the 'src' attribute (a "file:filename" uri.
+-- specified with the 'src' attribute (a "file:filename" uri).
    if src then return fetch_from_uri(src) end
 end)
 
@@ -169,9 +174,10 @@ moonsc.set_invoke_callback(function(invokeinfo)
    -- when executed, returns the statechart in its Lua-table equivalent form.
    -- This is a convenient way to execute Lua statecharts invoked by other Lua
    -- statecharts, but we are not obliged to use this method. We can devise any other
-   -- method we like: what's essential is that invoking session specifies a statechart
-   -- (or other service) in 'src' or 'data.content', and that this function knows how
-   -- to interpret those fields so to know which statechart or service it must execute.
+   -- method we like: what's essential is that the invoking session specifies a
+   -- statechart (or other kind of service) in 'src' or 'data.content', and that this
+   -- function knows how to interpret those fields so to know which statechart or
+   -- service it must execute.
    local code
    if invokeinfo.src then code = fetch_from_uri(invokeinfo.src)
    else code = invokeinfo.data.content
@@ -187,12 +193,12 @@ end)
 moonsc.set_cancel_callback(function(invokeinfo, childid)
 -- This is called when an invoked service is cancelled due to the parent
 -- session exiting the state containing the <invoke> while the invocation
--- is ongoing. It's expected either to cancel() the child session (if the
+-- is ongoing. It is expected either to cancel() the child session (if the
 -- service is a local session) or to signal the request for cancellation
 -- to the remote service provider.
 -- Note that after this, no events coming from the invoked service should
 -- be sent to the invoking session. MoonSC takes care of ensuring this if
--- the invoked service is a local session, otherwise this task its up to
+-- the invoked service is a local session, otherwise this task is up to
 -- the application.
    if childid then moonsc.cancel(childid) end
 end)
