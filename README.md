@@ -6,8 +6,9 @@ following the W3C [SCXML Recommendation](https://www.w3.org/TR/scxml/), capable
 of running multiple concurrent SCXML sessions defined by statecharts written
 as Lua tables.
 
-It runs on GNU/Linux <!-- and on Windows (MSYS2/MinGW) --> and requires 
-[Lua](http://www.lua.org/) (>=5.3).
+It runs on GNU/Linux and requires [Lua](http://www.lua.org/) (>=5.3).
+It should compile and run also on Windows (MSYS2/MinGW) and on MacOSX, but I've not
+tested this yet (any feedback is appreciated).
 
 
 _Author:_ _[Stefano Trettel](https://www.linkedin.com/in/stetre)_

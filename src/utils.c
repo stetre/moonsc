@@ -105,7 +105,7 @@ void Free(lua_State *L, void *ptr)
  | Time utilities                                                               |
  *------------------------------------------------------------------------------*/
 
-#if defined(LINUX)
+#if defined(LINUX)||defined(MACOSX)
 
 
 #if 0

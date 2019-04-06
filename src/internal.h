@@ -30,9 +30,6 @@
 #ifndef internalDEFINED
 #define internalDEFINED
 
-#ifdef LINUX
-#define _ISOC11_SOURCE /* see man aligned_alloc(3) */
-#endif
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
