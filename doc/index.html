@@ -1569,6 +1569,11 @@ as one is detected).</span></p>
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p>The following callbacks are added mainly as an aid to debug and visualization tools. They
+are not expected to affect the execution of the sessions (except for slowing them down,
+since callbacks are time-consuming):</p>
+</div>
 <div id="set_trace_callback" class="ulist">
 <ul>
 <li>
@@ -1577,6 +1582,48 @@ as one is detected).</span></p>
 <strong><em>func(sessionid, message)</em></strong> when something of interest happens during the execution
 of a running session (e.g. a change of state configuration). Mainly for debug
 and test purposes.</span></p>
+</li>
+</ul>
+</div>
+<div id="set_event_callback" class="ulist">
+<ul>
+<li>
+<p><strong>set_event_callback</strong>(<em>func</em>)<br>
+<span class="small">Registers the function <em>func</em> as the 'event callback', which is called as
+<strong><em>func(sessionid, eventinfo)</em></strong> when an event is about to be processed.
+The <a href="#eventinfo"><em>eventinfo</em></a> argument may be <em>nil</em>, meaning the 'null event'.</span></p>
+</li>
+</ul>
+</div>
+<div id="set_transition_callback" class="ulist">
+<ul>
+<li>
+<p><strong>set_transition_callback</strong>(<em>func</em>)<br>
+<span class="small">Registers the function <em>func</em> as the 'transition callback', which is called as
+<strong><em>func(sessionid, source, event, cond, target)</em></strong> when a transition is about to be taken.
+The <em>source</em> argument is the id of the source state, while the <em>event</em>, <em>cond</em>, and
+<em>target</em> arguments are the values of the corresponding attributes in the &lt;transition&gt;
+element being executed.</span></p>
+</li>
+</ul>
+</div>
+<div id="set_exit_states_callback" class="ulist">
+<ul>
+<li>
+<p><strong>set_exit_states_callback</strong>(<em>func</em>)<br>
+<span class="small">Registers the function <em>func</em> as the 'exit states callback', which is called as
+<strong><em>func(sessionid, states)</em></strong> when a set of states is about to be exited. The <em>states</em>
+argument is a table containing the ids of the states, in exit order.</span></p>
+</li>
+</ul>
+</div>
+<div id="set_enter_states_callback" class="ulist">
+<ul>
+<li>
+<p><strong>set_enter_states_callback</strong>(<em>func</em>)<br>
+<span class="small">Registers the function <em>func</em> as the 'enter states callback', which is called as
+<strong><em>func(sessionid, states)</em></strong> when a set of states is about to be entered. The <em>states</em>
+argument is a table containing the ids of the states, in entry order.</span></p>
 </li>
 </ul>
 </div>

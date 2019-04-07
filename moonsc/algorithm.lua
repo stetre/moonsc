@@ -33,7 +33,8 @@ local list = require("moonsc.list")
 local table_concat = table.concat
 local fmt = string.format
 
-local exit_callback, trace_callback
+local exit_callback, trace_callback, transition_callback
+local event_callback, exit_states_callback, enter_states_callback
 
 -- Compare functions for sorting elements
 -- document_order = the order in which the elements occurred in the original document.
@@ -46,6 +47,13 @@ local exit_callback, trace_callback
 local function document_order(a, b) return a._eix < b._eix end
 local entry_order = document_order
 local function exit_order(a, b) return a._eix > b._eix end
+
+local function idstbl(element_list)
+-- Returns a table with the ids of the elements in element_list, preserving order.
+   local t = {}
+   for _, s in pairs(element_list) do t[#t+1] = s.id end
+   return t
+end
 
 local function idstr(element_list)
 -- Returns a string with the ids of the elements in element_list, sorted in doc order.
@@ -255,6 +263,9 @@ local function exit_states(tset)
    if trace_callback then
       trace_callback(SessionId, "exit states "..idstr(exitset))
    end
+   if exit_states_callback then
+      exit_states_callback (SessionId, idstbl(exitset))
+   end
    for _, s in pairs(exitset) do
       -- Any pending invoke would be immediately cancelled, so don't do them:
       InvokeStates:delete(s)
@@ -276,6 +287,9 @@ local function enter_states(tset)
    local entryset, defentry, dht = compute_entry_set(tset)
    if trace_callback then
       trace_callback(SessionId, "enter states "..idstr(entryset))
+   end
+   if enter_states_callback then
+      enter_states_callback (SessionId, idstbl(entryset:sort(entry_order)))
    end
    for _, s in pairs(entryset:sort(entry_order)) do
       Active:add(s)
@@ -409,14 +423,20 @@ local function trace_queued_events()
    end
 end
 
-local function microstep(tset)
+local function microstep(ev, tset)
 -- Processes a set of transitions in lock-step.
--- ev = an event (eventinfo table)
+   if event_callback then
+      event_callback(SessionId, ev)
+   end
+   if not tset then return end
    exit_states(tset)
    for _, t in pairs(tset) do
       if trace_callback then
          trace_callback(SessionId, "transition "..
                t._source.id.."->{"..table_concat(t._targetids,',').."}")
+      end
+      if transition_callback then
+         transition_callback(SessionId, t._source.id, t.event, t.cond, t.target)
       end
       t._execute()
    end
@@ -424,7 +444,6 @@ local function microstep(tset)
 end
 
 local function loop_iteration_(scxml)
-   
    -- if trace_callback then trace_queued_events() end --@@ debug only
    if not Current._macrostep then -- poll for external events
       local ev = Current._extqueue:pop()
@@ -451,7 +470,7 @@ local function loop_iteration_(scxml)
          end
       end
       local tset = enabled_transitions(ev.name)
-      if tset then microstep(tset) end
+      microstep(ev, tset)
    end
 
    -- process eventless transitions, if any
@@ -461,8 +480,8 @@ local function loop_iteration_(scxml)
          trace_callback(SessionId, "processing null event")
       end
       set_event(Current, nil)
-      microstep(tset) 
-      return 
+      microstep(nil, tset)
+      return
    end
 
    -- process the next internal event, if any
@@ -473,7 +492,7 @@ local function loop_iteration_(scxml)
       end
       set_event(Current, ev)
       local tset = enabled_transitions(ev.name)
-      if tset then microstep(tset) end
+      microstep(ev, tset)
       return 
    end
 
@@ -520,6 +539,10 @@ local function open(moonsc_, internal_)
    moonsc, internal = moonsc_, internal_
    moonsc.set_exit_callback = function(func) exit_callback = func end
    moonsc.set_trace_callback = function(func) trace_callback = func end
+   moonsc.set_event_callback = function(func) event_callback = func end
+   moonsc.set_transition_callback = function(func) transition_callback = func end
+   moonsc.set_exit_states_callback = function(func) exit_states_callback = func end
+   moonsc.set_enter_states_callback = function(func) enter_states_callback = func end
    internal.start_session = start_session
    internal.loop_iteration = loop_iteration
 end

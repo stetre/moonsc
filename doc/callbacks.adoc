@@ -147,10 +147,40 @@ the execution as dictated by the SCXML Recommendation. By setting this callback,
 the application may additionally track these errors and possibly exit as soon
 as one is detected).#
 
+The following callbacks are added mainly as an aid to debug and visualization tools. They
+are not expected to affect the execution of the sessions (except for slowing them down,
+since callbacks are time-consuming):
+
 [[set_trace_callback]]
 * *set_trace_callback*(_func_) +
 [small]#Registers the function _func_ as the 'trace callback', which is called as
 *_func(sessionid, message)_* when something of interest happens during the execution
 of a running session (e.g. a change of state configuration). Mainly for debug
 and test purposes.#
+
+[[set_event_callback]]
+* *set_event_callback*(_func_) +
+[small]#Registers the function _func_ as the 'event callback', which is called as
+*_func(sessionid, eventinfo)_* when an event is about to be processed.
+The <<eventinfo, _eventinfo_>> argument may be _nil_, meaning the 'null event'.#
+
+[[set_transition_callback]]
+* *set_transition_callback*(_func_) +
+[small]#Registers the function _func_ as the 'transition callback', which is called as
+*_func(sessionid, source, event, cond, target)_* when a transition is about to be taken.
+The _source_ argument is the id of the source state, while the _event_, _cond_, and
+_target_ arguments are the values of the corresponding attributes in the &lt;transition&gt;
+element being executed.#
+
+[[set_exit_states_callback]]
+* *set_exit_states_callback*(_func_) +
+[small]#Registers the function _func_ as the 'exit states callback', which is called as
+*_func(sessionid, states)_* when a set of states is about to be exited. The _states_
+argument is a table containing the ids of the states, in exit order.#
+
+[[set_enter_states_callback]]
+* *set_enter_states_callback*(_func_) +
+[small]#Registers the function _func_ as the 'enter states callback', which is called as
+*_func(sessionid, states)_* when a set of states is about to be entered. The _states_
+argument is a table containing the ids of the states, in entry order.#
 
