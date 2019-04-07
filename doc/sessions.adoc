@@ -95,3 +95,9 @@ is not included in the list, although it is implicitly always active.#
 [small]#Returns _true_ if the state whose id is _stateid_ is currently active in the given
 session, otherwise returns _false_.#
 
+[[env]]
+* _env_ = *get_env*(_sessionid_) +
+[small]#Returns the
+http://www.lua.org/manual/5.3/manual.html#2.2[Lua environment ($$_ENV$$)] dedicated to
+the session, or nil if the session doesn't exist (or doesn' exist anymore).#
+

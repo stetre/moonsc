@@ -360,6 +360,11 @@ local function is_active(sessionid, stateid)
    return scxml._activestates:ismember(s)
 end
 
+local function get_env(sessionid)
+   local scxml = Sessions[sessionid]
+   return scxml and scxml._ENV or nil
+end
+
 local function trigger()
    callmesoon = false
    flush_delayed_sends()
@@ -386,6 +391,7 @@ local function open(moonsc_, internal_)
    moonsc.trigger = trigger
    moonsc.active_states = active_states
    moonsc.is_active = is_active
+   moonsc.get_env = get_env
    moonsc.set_error_callback = function(func) error_callback=func end
    moonsc.set_send_callback = function(func) send_callback=func end
    -- get the functions for delay sends and hide them from the user
