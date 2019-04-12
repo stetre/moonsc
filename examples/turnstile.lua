@@ -53,7 +53,7 @@ moonsc.create(sessionid, statechart)
 moonsc.start(sessionid)
 
 -- Send a few events to simulate a scenario:
-moonsc.send(sessionid, "turn_on")  -- first of oll, turn the turnstile on
+moonsc.send(sessionid, "turn_on")  -- first of all, turn the turnstile on
 moonsc.send(sessionid, "coin")     -- insert coin...
 moonsc.send(sessionid, "pass")     -- ...and pass
 moonsc.send(sessionid, "pass")     -- sorry, you won't pass without inserting a coin!
