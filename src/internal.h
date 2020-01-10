@@ -33,6 +33,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include <inttypes.h>
 #include "moonsc.h"
 #include "tree.h"
 
